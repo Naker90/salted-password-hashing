@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>SaltedPasswordHashing.Src.Domain</AssemblyName>
+    <PackageId>Src.Domain</PackageId>
   </PropertyGroup>
 
 </Project>

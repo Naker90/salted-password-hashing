@@ -1,2 +1,2 @@
-src/Domain/obj
-tests/Domain/obj
+**/obj
+**/bin
