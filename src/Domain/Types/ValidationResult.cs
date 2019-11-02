@@ -21,7 +21,7 @@ namespace SaltedPasswordHashing.Src.Domain.Types
                 isValid: true);
         }
 
-        public static ValidationResult<T> CreateValidResult(Error error)
+        public static ValidationResult<T> CreateInvalidResult(Error error)
         {
             return new ValidationResult<T>(
                 result: null,

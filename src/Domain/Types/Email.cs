@@ -13,7 +13,7 @@ namespace SaltedPasswordHashing.Src.Domain.Types
         {
             if(!IsValidEmail(email: value))
             {
-                return ValidationResult<Email>.CreateValidResult(error: Error.InvalidFormat);
+                return ValidationResult<Email>.CreateInvalidResult(error: Error.InvalidFormat);
             }
             Email email = new Email(value: value);
             return ValidationResult<Email>.CreateValidResult(result: email);
