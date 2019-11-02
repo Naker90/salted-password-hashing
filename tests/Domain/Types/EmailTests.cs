@@ -7,7 +7,7 @@ namespace SaltedPasswordHashing.Test.Domain.Types
     public class EmailTests
     {
         [TestMethod]
-        public void ShouldCreatesEmail()
+        public void ShouldCreatesValidEmail()
         {
             var userEmail = "user@email.com";
 
