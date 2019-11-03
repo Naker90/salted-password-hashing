@@ -30,6 +30,18 @@ namespace  SaltedPasswordHashing.Src.Domain.User.SignUp
                     }.AsReadOnly()
                 );
             }
+            if(string.IsNullOrEmpty(password))
+            {
+                return RequestValidationResult<UserSignUpRequest>.CreateInvalidResult(
+                    errors: new List<ValidationError>
+                    {
+                        new ValidationError(
+                            fieldId: nameof(Password),
+                            error: Error.Required
+                        )
+                    }.AsReadOnly()
+                );
+            }
 
             ValidationResult<Email> emailValidationResult = Email.Create(value: email);
             ValidationResult<Password> passwordValidationResult = Password.Create(value: password);

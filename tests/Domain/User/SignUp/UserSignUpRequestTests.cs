@@ -35,5 +35,18 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
             Assert.AreEqual(result.Errors[0].FieldId, "Email");
             Assert.AreEqual(result.Errors[0].Error, Error.Required);
         }
+
+        [TestMethod]
+        public void ShouldReturnsErrorWhenPasswordIsEmpty()
+        {
+            RequestValidationResult<UserSignUpRequest> result = UserSignUpRequest.Create(
+                email: "user@email.com",
+                password: null
+            ); 
+
+            Assert.IsFalse(result.IsValid);
+            Assert.AreEqual(result.Errors[0].FieldId, "Password");
+            Assert.AreEqual(result.Errors[0].Error, Error.Required);
+        }
     }
 }
