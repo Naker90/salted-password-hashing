@@ -9,7 +9,7 @@ namespace SaltedPasswordHashing.Test.Domain.Types
         [TestMethod]
         public void ShouldCreatesValidPasswords()
         {
-            var password = "ValidPassword1";
+            var password = "ValidPassword1$";
 
             ValidationResult<Password> result = Password.Create(value: password);
 
@@ -32,6 +32,17 @@ namespace SaltedPasswordHashing.Test.Domain.Types
         public void ShouldReturnsErrorWhenPasswordIsNotAlphanumeric()
         {
             var password = "12345678";
+
+            ValidationResult<Password> result = Password.Create(value: password);
+
+            Assert.IsFalse(result.IsValid);
+            Assert.AreEqual(result.Error, Error.InvalidFormat);
+        }
+
+        [TestMethod]
+        public void ShouldReturnsErrorWhenPasswordDoesNotContainAtLeastOfOneSymbol()
+        {
+            var password = "Passw0rdWith0utSymb0ls";
 
             ValidationResult<Password> result = Password.Create(value: password);
 
