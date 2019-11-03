@@ -31,7 +31,18 @@ namespace SaltedPasswordHashing.Test.Domain.Types
         [TestMethod]
         public void ShouldReturnsErrorWhenPasswordIsNotAlphanumeric()
         {
-            var password = "12345678";
+            var password = "12345678+";
+
+            ValidationResult<Password> result = Password.Create(value: password);
+
+            Assert.IsFalse(result.IsValid);
+            Assert.AreEqual(result.Error, Error.InvalidFormat);
+        }
+
+        [TestMethod]
+        public void ShouldReturnsErrorWhenPasswordDoesNotContainAtLeastOfOneUpperCaseLetter()
+        {
+            var password = "lowercasepassword1$";
 
             ValidationResult<Password> result = Password.Create(value: password);
 

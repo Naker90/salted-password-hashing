@@ -25,11 +25,16 @@ namespace SaltedPasswordHashing.Src.Domain.Types
             const int MIN_ALLOWED_PASSWORD_LENGHT = 8;
             return password.Length >= MIN_ALLOWED_PASSWORD_LENGHT 
                     && IsAlphanumeric()
+                    && ContainsAtLeastOfOneUpperCaseLetter()
                     && ContainsAtLeastOfOneSymbol();
 
             bool IsAlphanumeric()
             {
                 return password.Any(char.IsNumber) && password.Any(char.IsLetter); 
+            }
+
+            bool ContainsAtLeastOfOneUpperCaseLetter(){
+                return password.Any(char.IsUpper);
             }
 
             bool ContainsAtLeastOfOneSymbol(){
