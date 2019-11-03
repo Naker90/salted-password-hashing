@@ -17,13 +17,20 @@ namespace  SaltedPasswordHashing.Src.Domain.User.SignUp
             string email,
             string password)
         {
+            if(string.IsNullOrEmpty(email))
+            {
+                return ValidationResult<UserSignUpRequest>.CreateInvalidResult(
+                    error: Error.Required
+                );
+            }
+
             ValidationResult<Email> emailValidationResult = Email.Create(value: email);
             ValidationResult<Password> passwordValidationResult = Password.Create(value: password);
             
             UserSignUpRequest request = new UserSignUpRequest(
                 email: emailValidationResult.Result,
                 password: passwordValidationResult.Result);
-                
+
             return ValidationResult<UserSignUpRequest>.CreateValidResult(result: request);
         }
     }
