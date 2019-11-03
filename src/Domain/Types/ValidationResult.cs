@@ -1,6 +1,6 @@
 namespace SaltedPasswordHashing.Src.Domain.Types
 {
-    public class ValidationResult<T> where T : class
+    public sealed class ValidationResult<T> where T : class
     {
         public T Result { get; }
         public Error? Error { get; }

@@ -1,6 +1,6 @@
 namespace SaltedPasswordHashing.Src.Domain.Types
 {
-    public class Email
+    public sealed class Email
     {
         public string Value { get; }
         

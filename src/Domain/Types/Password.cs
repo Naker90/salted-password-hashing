@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace SaltedPasswordHashing.Src.Domain.Types
 {
-    public class Password
+    public sealed class Password
     {
         public string Value { get; }
         
