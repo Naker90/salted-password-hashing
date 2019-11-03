@@ -23,7 +23,8 @@ namespace SaltedPasswordHashing.Src.Domain.Types
         private static bool IsValidPassword(string password)
         {
             const int MIN_ALLOWED_PASSWORD_LENGHT = 8;
-            return password.Length >= MIN_ALLOWED_PASSWORD_LENGHT 
+            return password != null
+                    && password.Length >= MIN_ALLOWED_PASSWORD_LENGHT 
                     && IsAlphanumeric()
                     && ContainsAtLeastOfOneUpperCaseLetter()
                     && ContainsAtLeastOfOneSymbol();

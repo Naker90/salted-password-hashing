@@ -1,5 +1,6 @@
 using SaltedPasswordHashing.Src.Domain.Types;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace  SaltedPasswordHashing.Src.Domain.User.SignUp
 {
@@ -18,34 +19,24 @@ namespace  SaltedPasswordHashing.Src.Domain.User.SignUp
             string email,
             string password)
         {
+            var errors = new List<ValidationError>();
             if(string.IsNullOrEmpty(email))
             {
-                return RequestValidationResult<UserSignUpRequest>.CreateInvalidResult(
-                    errors: new List<ValidationError>
-                    {
-                        new ValidationError(
-                            fieldId: nameof(Email),
-                            error: Error.Required
-                        )
-                    }.AsReadOnly()
-                );
+                errors.Add(new ValidationError(fieldId: nameof(Email), error: Error.Required));
             }
             if(string.IsNullOrEmpty(password))
             {
-                return RequestValidationResult<UserSignUpRequest>.CreateInvalidResult(
-                    errors: new List<ValidationError>
-                    {
-                        new ValidationError(
-                            fieldId: nameof(Password),
-                            error: Error.Required
-                        )
-                    }.AsReadOnly()
-                );
+                errors.Add(new ValidationError(fieldId: nameof(Password), error: Error.Required));
             }
-
             ValidationResult<Email> emailValidationResult = Email.Create(value: email);
             ValidationResult<Password> passwordValidationResult = Password.Create(value: password);
             
+            if(errors.Any()){
+                return RequestValidationResult<UserSignUpRequest>.CreateInvalidResult(
+                    errors: errors.AsReadOnly()
+                );
+            }
+
             UserSignUpRequest request = new UserSignUpRequest(
                 email: emailValidationResult.Result,
                 password: passwordValidationResult.Result);

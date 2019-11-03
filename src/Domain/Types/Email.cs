@@ -21,12 +21,17 @@ namespace SaltedPasswordHashing.Src.Domain.Types
 
         private static bool IsValidEmail(string email)
         {
-            try {
-                var addr = new System.Net.Mail.MailAddress(email);
-                return addr.Address == email;
-            }
-            catch {
-                return false;
+            return email != null && HasValidFormat();
+
+            bool HasValidFormat()
+            {
+                try {
+                    var addr = new System.Net.Mail.MailAddress(email);
+                    return addr.Address == email;
+                }
+                catch {
+                    return false;
+                }
             }
         }
     }
