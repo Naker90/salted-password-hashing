@@ -13,7 +13,7 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
             var email = "user@email.com";
             var password = "Passw0rd$";
 
-            ValidationResult<UserSignUpRequest> result = UserSignUpRequest.Create(
+            RequestValidationResult<UserSignUpRequest> result = UserSignUpRequest.Create(
                 email: email,
                 password: password
             ); 
@@ -26,13 +26,14 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
         [TestMethod]
         public void ShouldReturnsErrorWhenEmailIsEmpty()
         {
-            ValidationResult<UserSignUpRequest> result = UserSignUpRequest.Create(
+            RequestValidationResult<UserSignUpRequest> result = UserSignUpRequest.Create(
                 email: string.Empty,
                 password: "Passw0rd$"
             ); 
 
             Assert.IsFalse(result.IsValid);
-            Assert.AreEqual(result.Error, Error.Required);
+            Assert.AreEqual(result.Errors[0].FieldId, "Email");
+            Assert.AreEqual(result.Errors[0].Error, Error.Required);
         }
     }
 }

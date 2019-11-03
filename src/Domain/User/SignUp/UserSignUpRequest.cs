@@ -1,4 +1,5 @@
 using SaltedPasswordHashing.Src.Domain.Types;
+using System.Collections.Generic;
 
 namespace  SaltedPasswordHashing.Src.Domain.User.SignUp
 {
@@ -13,14 +14,20 @@ namespace  SaltedPasswordHashing.Src.Domain.User.SignUp
             Password = password;
         }
 
-        public static ValidationResult<UserSignUpRequest> Create(
+        public static RequestValidationResult<UserSignUpRequest> Create(
             string email,
             string password)
         {
             if(string.IsNullOrEmpty(email))
             {
-                return ValidationResult<UserSignUpRequest>.CreateInvalidResult(
-                    error: Error.Required
+                return RequestValidationResult<UserSignUpRequest>.CreateInvalidResult(
+                    errors: new List<ValidationError>
+                    {
+                        new ValidationError(
+                            fieldId: nameof(Email),
+                            error: Error.Required
+                        )
+                    }.AsReadOnly()
                 );
             }
 
@@ -31,7 +38,7 @@ namespace  SaltedPasswordHashing.Src.Domain.User.SignUp
                 email: emailValidationResult.Result,
                 password: passwordValidationResult.Result);
 
-            return ValidationResult<UserSignUpRequest>.CreateValidResult(result: request);
+            return RequestValidationResult<UserSignUpRequest>.CreateValidResult(result: request);
         }
     }
 }
