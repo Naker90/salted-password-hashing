@@ -20,10 +20,11 @@ namespace  SaltedPasswordHashing.Src.Domain.User.SignUp
             ValidationResult<Email> emailValidationResult = Email.Create(value: email);
             ValidationResult<Password> passwordValidationResult = Password.Create(value: password);
             
-            return ValidationResult<UserSignUpRequest>.CreateValidResult(
-                result: new UserSignUpRequest(
-                    email: emailValidationResult.Result,
-                    password: passwordValidationResult.Result));
+            UserSignUpRequest request = new UserSignUpRequest(
+                email: emailValidationResult.Result,
+                password: passwordValidationResult.Result);
+                
+            return ValidationResult<UserSignUpRequest>.CreateValidResult(result: request);
         }
     }
 }
