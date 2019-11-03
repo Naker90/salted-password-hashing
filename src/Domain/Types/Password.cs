@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace SaltedPasswordHashing.Src.Domain.Types
 {
     public class Password
@@ -21,7 +23,12 @@ namespace SaltedPasswordHashing.Src.Domain.Types
         private static bool IsValidPassword(string password)
         {
             const int MIN_ALLOWED_PASSWORD_LENGHT = 8;
-            return password.Length >= MIN_ALLOWED_PASSWORD_LENGHT;
+            return password.Length >= MIN_ALLOWED_PASSWORD_LENGHT && IsAlphanumeric();
+
+            bool IsAlphanumeric()
+            {
+                return password.Any(char.IsNumber) && password.Any(char.IsLetter); 
+            }
         }
     }
 }
