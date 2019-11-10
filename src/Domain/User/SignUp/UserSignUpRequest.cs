@@ -23,8 +23,8 @@ namespace  SaltedPasswordHashing.Src.Domain.User.SignUp
             ValidationResult<Email> emailValidationResult = Email.Create(value: email);
             ValidationResult<Password> passwordValidationResult = Password.Create(value: password);
 
-            var errors = CheckErrors<Email>(validationResult: emailValidationResult, fieldId: nameof(Email))
-                .Concat(CheckErrors<Password>(validationResult: passwordValidationResult, fieldId: nameof(Password)))
+            var errors = BuilValidationErrorsFrom<Email>(validationResult: emailValidationResult, fieldId: nameof(Email))
+                .Concat(BuilValidationErrorsFrom<Password>(validationResult: passwordValidationResult, fieldId: nameof(Password)))
                 .ToList();
 
             if(errors.Any())
@@ -40,7 +40,7 @@ namespace  SaltedPasswordHashing.Src.Domain.User.SignUp
             return RequestValidationResult<UserSignUpRequest>.CreateValidResult(result: request);
         }
 
-        private static List<ValidationError> CheckErrors<T>(
+        private static List<ValidationError> BuilValidationErrorsFrom<T>(
             ValidationResult<T> validationResult,
             string fieldId) where T : class
         {
