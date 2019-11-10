@@ -38,14 +38,14 @@ namespace SaltedPasswordHashing.Src.Domain.Types
     }
 
     public sealed class ValidationError
-        {
-            public string FieldId { get; }
-            public Error Error { get; }
+    {
+        public string FieldId { get; }
+        public Error Error { get; }
 
-            public ValidationError(string fieldId, Error error)
-            {
-                FieldId = fieldId;
-                Error = error;
-            }
+        public ValidationError(string fieldId, Error error)
+        {
+            FieldId = fieldId;
+            Error = error;
         }
+    }
 }
