@@ -18,6 +18,17 @@ namespace SaltedPasswordHashing.Test.Domain.Types
         }
 
         [TestMethod]
+        public void ShouldReturnsErrorWhenEmailIsEmpty()
+        {
+            var userEmail = null;
+
+            ValidationResult<Email> result = Email.Create(value: userEmail);
+
+            Assert.IsFalse(result.IsValid);
+            Assert.AreEqual(result.Error, Error.Required);
+        }
+
+        [TestMethod]
         public void ShouldReturnsErrorWhenEmailFormatIsInvalid()
         {
             var userEmail = "invalid.com";
