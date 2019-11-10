@@ -1,6 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SaltedPasswordHashing.Src.Domain.Types;
 using SaltedPasswordHashing.Src.Domain.User.SignUp;
+using System.Linq;
 
 namespace SaltedPasswordHashing.Test.Domain.User.SignUp
 {
@@ -32,8 +33,8 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
             ); 
 
             Assert.IsFalse(result.IsValid);
-            Assert.AreEqual(result.Errors[0].FieldId, "Email");
-            Assert.AreEqual(result.Errors[0].Error, Error.Required);
+            Assert.AreEqual(result.Errors.First().FieldId, "Email");
+            Assert.AreEqual(result.Errors.First().Error, Error.Required);
         }
 
         [TestMethod]
@@ -45,8 +46,8 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
             ); 
 
             Assert.IsFalse(result.IsValid);
-            Assert.AreEqual(result.Errors[0].FieldId, "Password");
-            Assert.AreEqual(result.Errors[0].Error, Error.Required);
+            Assert.AreEqual(result.Errors.First().FieldId, "Password");
+            Assert.AreEqual(result.Errors.First().Error, Error.Required);
         }
 
         [TestMethod]
@@ -58,13 +59,13 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
             ); 
 
             Assert.IsFalse(result.IsValid);
-            Assert.AreEqual(result.Errors[0].FieldId, "Email");
-            Assert.AreEqual(result.Errors[0].Error, Error.InvalidFormat);
+            Assert.AreEqual(result.Errors.First().FieldId, "Email");
+            Assert.AreEqual(result.Errors.First().Error, Error.InvalidFormat);
         }
 
         
         [TestMethod]
-        public void ShouldReturnsErrorWhenPasswordCreationIsFail()
+        public void ShouldReturnsErrorWhenCreationIsFail()
         {
             RequestValidationResult<UserSignUpRequest> result = UserSignUpRequest.Create(
                 email: "user@email.com",
@@ -72,8 +73,8 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
             ); 
 
             Assert.IsFalse(result.IsValid);
-            Assert.AreEqual(result.Errors[0].FieldId, "Password");
-            Assert.AreEqual(result.Errors[0].Error, Error.InvalidFormat);
+            Assert.AreEqual(result.Errors.First().FieldId, "Password");
+            Assert.AreEqual(result.Errors.First().Error, Error.InvalidFormat);
         }
     }
 }
