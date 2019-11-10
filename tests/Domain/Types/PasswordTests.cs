@@ -22,9 +22,9 @@ namespace SaltedPasswordHashing.Test.Domain.Types
         [TestMethod]
         public void ShouldReturnsErrorWhenPasswordIsEmpty()
         {
-            string userEmail = null;
+            string password = null;
 
-            ValidationResult<Email> result = Email.Create(value: userEmail);
+            ValidationResult<Password> result = Password.Create(value: password);
 
             Assert.IsFalse(result.IsValid);
             Assert.AreEqual(result.Error, Error.Required);

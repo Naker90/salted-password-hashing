@@ -13,6 +13,10 @@ namespace SaltedPasswordHashing.Src.Domain.Types
         
         public static ValidationResult<Password> Create(string value)
         {
+            if(string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
+            {
+                return ValidationResult<Password>.CreateInvalidResult(error: Error.Required);
+            }
             if(!IsValidPassword(password: value)){
                 return ValidationResult<Password>.CreateInvalidResult(error: Error.InvalidFormat);
             }
@@ -23,8 +27,7 @@ namespace SaltedPasswordHashing.Src.Domain.Types
         private static bool IsValidPassword(string password)
         {
             const int MIN_ALLOWED_PASSWORD_LENGHT = 8;
-            return password != null
-                    && password.Length >= MIN_ALLOWED_PASSWORD_LENGHT 
+            return password.Length >= MIN_ALLOWED_PASSWORD_LENGHT 
                     && IsAlphanumeric()
                     && ContainsAtLeastOfOneUpperCaseLetter()
                     && ContainsAtLeastOfOneSymbol();
