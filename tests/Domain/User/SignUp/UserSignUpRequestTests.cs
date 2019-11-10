@@ -25,7 +25,7 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
         }
 
         [TestMethod]
-        public void ShouldReturnsErrorWhenEmailIsEmpty()
+        public void ShouldReturnsErrorWhenEmailCreationIsFail()
         {
             RequestValidationResult<UserSignUpRequest> result = UserSignUpRequest.Create(
                 email: string.Empty,
@@ -37,44 +37,18 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
             Assert.AreEqual(result.Errors.First().Error, Error.Required);
         }
 
-        [TestMethod]
-        public void ShouldReturnsErrorWhenPasswordIsEmpty()
-        {
-            RequestValidationResult<UserSignUpRequest> result = UserSignUpRequest.Create(
-                email: "user@email.com",
-                password: null
-            ); 
-
-            Assert.IsFalse(result.IsValid);
-            Assert.AreEqual(result.Errors.First().FieldId, "Password");
-            Assert.AreEqual(result.Errors.First().Error, Error.Required);
-        }
-
-        [TestMethod]
-        public void ShouldReturnsErrorWhenEmailCreationIsFail()
-        {
-            RequestValidationResult<UserSignUpRequest> result = UserSignUpRequest.Create(
-                email: "user.com",
-                password: "Passw0rd$"
-            ); 
-
-            Assert.IsFalse(result.IsValid);
-            Assert.AreEqual(result.Errors.First().FieldId, "Email");
-            Assert.AreEqual(result.Errors.First().Error, Error.InvalidFormat);
-        }
-
         
         [TestMethod]
         public void ShouldReturnsErrorWhenCreationIsFail()
         {
             RequestValidationResult<UserSignUpRequest> result = UserSignUpRequest.Create(
                 email: "user@email.com",
-                password: "password"
+                password: string.Empty
             ); 
 
             Assert.IsFalse(result.IsValid);
             Assert.AreEqual(result.Errors.First().FieldId, "Password");
-            Assert.AreEqual(result.Errors.First().Error, Error.InvalidFormat);
+            Assert.AreEqual(result.Errors.First().Error, Error.Required);
         }
     }
 }

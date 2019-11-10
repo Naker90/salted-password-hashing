@@ -20,9 +20,23 @@ namespace  SaltedPasswordHashing.Src.Domain.User.SignUp
             string email,
             string password)
         {
-            var errors = ValidateEmail(email: email)
-                .Concat(ValidatePassword(password: password))
-                .ToList();
+            var errors = new List<ValidationError>();
+
+            ValidationResult<Email> emailValidationResult = Email.Create(value: email);
+            if(!emailValidationResult.IsValid)
+            {
+                errors.Add(new ValidationError(
+                    fieldId: nameof(Email), 
+                    error: emailValidationResult.Error.Value));
+            }
+
+            ValidationResult<Password> passwordValidationResult = Password.Create(value: password);
+            if(!passwordValidationResult.IsValid)
+            {
+                errors.Add(new ValidationError(
+                    fieldId: nameof(Password), 
+                    error: passwordValidationResult.Error.Value));
+            }
 
             if(errors.Any()){
                 
@@ -30,54 +44,11 @@ namespace  SaltedPasswordHashing.Src.Domain.User.SignUp
                     errors: errors.AsReadOnly()
                 );
             }
-
-            ValidationResult<Email> emailValidationResult = Email.Create(value: email);
-            ValidationResult<Password> passwordValidationResult = Password.Create(value: password);
+            
             UserSignUpRequest request = new UserSignUpRequest(
                 email: emailValidationResult.Result,
                 password: passwordValidationResult.Result);
-
             return RequestValidationResult<UserSignUpRequest>.CreateValidResult(result: request);
-        }
-
-        private static List<ValidationError> ValidateEmail(string email)
-        {
-            var errors = new List<ValidationError>();
-            if(string.IsNullOrEmpty(email))
-            {
-                errors.Add(new ValidationError(fieldId: nameof(Email), error: Error.Required));
-            }
-            else
-            {
-                ValidationResult<Email> emailValidationResult = Email.Create(value: email);
-                if(!emailValidationResult.IsValid)
-                {
-                    errors.Add(new ValidationError(
-                        fieldId: nameof(Email), 
-                        error: emailValidationResult.Error.Value));
-                }
-            }
-            return errors;
-        }
-
-        private static List<ValidationError> ValidatePassword(string password)
-        {
-            var errors = new List<ValidationError>();
-            if(string.IsNullOrEmpty(password))
-            {
-                errors.Add(new ValidationError(fieldId: nameof(Password), error: Error.Required));
-            }
-            else
-            {
-                ValidationResult<Password> passwordValidationResult = Password.Create(value: password);
-                if(!passwordValidationResult.IsValid)
-                {
-                    errors.Add(new ValidationError(
-                        fieldId: nameof(Password), 
-                        error: passwordValidationResult.Error.Value));
-                }
-            }
-            return errors;
         }
     }
 }
