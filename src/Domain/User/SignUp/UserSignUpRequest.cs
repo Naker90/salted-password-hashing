@@ -29,8 +29,18 @@ namespace  SaltedPasswordHashing.Src.Domain.User.SignUp
                 errors.Add(new ValidationError(fieldId: nameof(Password), error: Error.Required));
             }
             ValidationResult<Email> emailValidationResult = Email.Create(value: email);
+            if(!emailValidationResult.IsValid){
+                errors.Add(new ValidationError(
+                    fieldId: nameof(Email), 
+                    error: emailValidationResult.Error.Value));
+            }
             ValidationResult<Password> passwordValidationResult = Password.Create(value: password);
-            
+            if(!passwordValidationResult.IsValid){
+                errors.Add(new ValidationError(
+                    fieldId: nameof(Password), 
+                    error: passwordValidationResult.Error.Value));
+            }
+
             if(errors.Any()){
                 return RequestValidationResult<UserSignUpRequest>.CreateInvalidResult(
                     errors: errors.AsReadOnly()
