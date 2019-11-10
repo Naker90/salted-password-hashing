@@ -20,11 +20,11 @@ namespace  SaltedPasswordHashing.Src.Domain.User.SignUp
             string email,
             string password)
         {
-            ValidationResult<Email> emailValidationResult = Email.Create(value: email);
-            ValidationResult<Password> passwordValidationResult = Password.Create(value: password);
+            ValidationResult<Email> emailCreationResult = Email.Create(value: email);
+            ValidationResult<Password> passwordCreationResult = Password.Create(value: password);
 
-            var errors = BuilValidationErrorsFrom<Email>(validationResult: emailValidationResult, fieldId: nameof(Email))
-                .Concat(BuilValidationErrorsFrom<Password>(validationResult: passwordValidationResult, fieldId: nameof(Password)))
+            var errors = BuilValidationErrorsFrom<Email>(creationResult: emailCreationResult, fieldId: nameof(Email))
+                .Concat(BuilValidationErrorsFrom<Password>(creationResult: passwordCreationResult, fieldId: nameof(Password)))
                 .ToList();
 
             if(errors.Any())
@@ -35,21 +35,21 @@ namespace  SaltedPasswordHashing.Src.Domain.User.SignUp
             }
 
             UserSignUpRequest request = new UserSignUpRequest(
-                email: emailValidationResult.Result,
-                password: passwordValidationResult.Result);
+                email: emailCreationResult.Result,
+                password: passwordCreationResult.Result);
             return RequestValidationResult<UserSignUpRequest>.CreateValidResult(result: request);
         }
 
         private static List<ValidationError> BuilValidationErrorsFrom<T>(
-            ValidationResult<T> validationResult,
+            ValidationResult<T> creationResult,
             string fieldId) where T : class
         {
             var errors = new List<ValidationError>();
-            if(!validationResult.IsValid)
+            if(!creationResult.IsValid)
             {
                 errors.Add(new ValidationError(
                     fieldId: fieldId, 
-                    error: validationResult.Error.Value));
+                    error: creationResult.Error.Value));
             }
             return errors;
         }
