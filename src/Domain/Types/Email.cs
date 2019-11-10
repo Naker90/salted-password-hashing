@@ -11,6 +11,10 @@ namespace SaltedPasswordHashing.Src.Domain.Types
         
         public static ValidationResult<Email> Create(string value)
         {
+            if(string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
+            {
+                return ValidationResult<Email>.CreateInvalidResult(error: Error.Required);
+            }
             if(!IsValidEmail(email: value))
             {
                 return ValidationResult<Email>.CreateInvalidResult(error: Error.InvalidFormat);
@@ -21,17 +25,12 @@ namespace SaltedPasswordHashing.Src.Domain.Types
 
         private static bool IsValidEmail(string email)
         {
-            return email != null && HasValidFormat();
-
-            bool HasValidFormat()
-            {
-                try {
-                    var addr = new System.Net.Mail.MailAddress(email);
-                    return addr.Address == email;
-                }
-                catch {
-                    return false;
-                }
+            try {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch {
+                return false;
             }
         }
     }
