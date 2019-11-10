@@ -17,6 +17,19 @@ namespace SaltedPasswordHashing.Test.Domain.Types
             Assert.AreEqual(result.Result.Value, password);
         }
 
+
+        //TODO: testar tambien el vacio o espacio en blanco
+        [TestMethod]
+        public void ShouldReturnsErrorWhenPasswordIsEmpty()
+        {
+            string userEmail = null;
+
+            ValidationResult<Email> result = Email.Create(value: userEmail);
+
+            Assert.IsFalse(result.IsValid);
+            Assert.AreEqual(result.Error, Error.Required);
+        }
+
         [TestMethod]
         public void ShouldReturnsErrorWhenPasswordLenghtIsLowerThan8()
         {
