@@ -20,35 +20,38 @@ namespace  SaltedPasswordHashing.Src.Domain.User.SignUp
             string email,
             string password)
         {
-            var errors = new List<ValidationError>();
-
             ValidationResult<Email> emailValidationResult = Email.Create(value: email);
-            if(!emailValidationResult.IsValid)
-            {
-                errors.Add(new ValidationError(
-                    fieldId: nameof(Email), 
-                    error: emailValidationResult.Error.Value));
-            }
-
             ValidationResult<Password> passwordValidationResult = Password.Create(value: password);
-            if(!passwordValidationResult.IsValid)
-            {
-                errors.Add(new ValidationError(
-                    fieldId: nameof(Password), 
-                    error: passwordValidationResult.Error.Value));
-            }
 
-            if(errors.Any()){
-                
+            var errors = CheckErrors<Email>(validationResult: emailValidationResult, fieldId: nameof(Email))
+                .Concat(CheckErrors<Password>(validationResult: passwordValidationResult, fieldId: nameof(Password)))
+                .ToList();
+
+            if(errors.Any())
+            {
                 return RequestValidationResult<UserSignUpRequest>.CreateInvalidResult(
                     errors: errors.AsReadOnly()
                 );
             }
-            
+
             UserSignUpRequest request = new UserSignUpRequest(
                 email: emailValidationResult.Result,
                 password: passwordValidationResult.Result);
             return RequestValidationResult<UserSignUpRequest>.CreateValidResult(result: request);
+        }
+
+        private static List<ValidationError> CheckErrors<T>(
+            ValidationResult<T> validationResult,
+            string fieldId) where T : class
+        {
+            var errors = new List<ValidationError>();
+            if(!validationResult.IsValid)
+            {
+                errors.Add(new ValidationError(
+                    fieldId: fieldId, 
+                    error: validationResult.Error.Value));
+            }
+            return errors;
         }
     }
 }
