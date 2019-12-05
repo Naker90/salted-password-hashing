@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 
-namespace  SaltedPasswordHashing.Src.Domain.User.SignUp
+namespace SaltedPasswordHashing.Src.Domain.User.SignUp
 {
     public sealed class UserSignUpRequest
     {
