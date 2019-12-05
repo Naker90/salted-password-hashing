@@ -11,17 +11,17 @@ namespace SaltedPasswordHashing.Src.Domain.Types
             Value = value;
         }
         
-        public static ValidationResult<Password> Create(string value)
+        public static CreationResult<Password> Create(string value)
         {
             if(string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
             {
-                return ValidationResult<Password>.CreateInvalidResult(error: Error.Required);
+                return CreationResult<Password>.CreateInvalidResult(error: Error.Required);
             }
             if(!IsValidPassword(password: value)){
-                return ValidationResult<Password>.CreateInvalidResult(error: Error.InvalidFormat);
+                return CreationResult<Password>.CreateInvalidResult(error: Error.InvalidFormat);
             }
             Password password = new Password(value: value);
-            return ValidationResult<Password>.CreateValidResult(result: password);
+            return CreationResult<Password>.CreateValidResult(result: password);
         }
 
         private static bool IsValidPassword(string password)

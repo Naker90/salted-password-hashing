@@ -9,18 +9,18 @@ namespace SaltedPasswordHashing.Src.Domain.Types
             Value = value;
         }
         
-        public static ValidationResult<Email> Create(string value)
+        public static CreationResult<Email> Create(string value)
         {
             if(string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
             {
-                return ValidationResult<Email>.CreateInvalidResult(error: Error.Required);
+                return CreationResult<Email>.CreateInvalidResult(error: Error.Required);
             }
             if(!IsValidEmail(email: value))
             {
-                return ValidationResult<Email>.CreateInvalidResult(error: Error.InvalidFormat);
+                return CreationResult<Email>.CreateInvalidResult(error: Error.InvalidFormat);
             }
             Email email = new Email(value: value);
-            return ValidationResult<Email>.CreateValidResult(result: email);
+            return CreationResult<Email>.CreateValidResult(result: email);
         }
 
         private static bool IsValidEmail(string email)

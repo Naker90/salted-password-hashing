@@ -1,29 +1,29 @@
 namespace SaltedPasswordHashing.Src.Domain.Types
 {
-    public sealed class ValidationResult<T> where T : class
+    public sealed class CreationResult<T> where T : class
     {
         public T Result { get; }
         public Error? Error { get; }
         public bool IsValid { get; }
 
-        private ValidationResult(T result, Error? error, bool isValid)
+        private CreationResult(T result, Error? error, bool isValid)
         {
             Result = result;
             Error = error;
             IsValid = isValid;
         }
 
-        public static ValidationResult<T> CreateValidResult(T result)
+        public static CreationResult<T> CreateValidResult(T result)
         {
-            return new ValidationResult<T>(
+            return new CreationResult<T>(
                 result: result,
                 error: null,
                 isValid: true);
         }
 
-        public static ValidationResult<T> CreateInvalidResult(Error error)
+        public static CreationResult<T> CreateInvalidResult(Error error)
         {
-            return new ValidationResult<T>(
+            return new CreationResult<T>(
                 result: null,
                 error: error,
                 isValid: false);

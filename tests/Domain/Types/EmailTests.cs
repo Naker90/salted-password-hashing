@@ -11,7 +11,7 @@ namespace SaltedPasswordHashing.Test.Domain.Types
         {
             var userEmail = "user@email.com";
 
-            ValidationResult<Email> result = Email.Create(value: userEmail);
+            CreationResult<Email> result = Email.Create(value: userEmail);
 
             Assert.IsTrue(result.IsValid);
             Assert.AreEqual(result.Result.Value, userEmail);
@@ -23,7 +23,7 @@ namespace SaltedPasswordHashing.Test.Domain.Types
         {
             string userEmail = null;
 
-            ValidationResult<Email> result = Email.Create(value: userEmail);
+            CreationResult<Email> result = Email.Create(value: userEmail);
 
             Assert.IsFalse(result.IsValid);
             Assert.AreEqual(result.Error, Error.Required);
@@ -34,7 +34,7 @@ namespace SaltedPasswordHashing.Test.Domain.Types
         {
             var userEmail = "invalid.com";
 
-            ValidationResult<Email> result = Email.Create(value: userEmail);
+            CreationResult<Email> result = Email.Create(value: userEmail);
 
             Assert.IsFalse(result.IsValid);
             Assert.AreEqual(result.Error, Error.InvalidFormat);
