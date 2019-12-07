@@ -25,15 +25,17 @@ namespace SaltedPasswordHashing.Src.Domain.User.SignUp
             if(userRepository.Exist(email: request.Email)){
                 return CreationResult<User, SignUpError>.CreateInvalidResult(SignUpError.UserAlreadyExist); 
             }
+            var user = EncryptPasswordAndCreateUser(request);
+            var createdUser = userRepository.Create(user);
+            return CreationResult<User, SignUpError>.CreateValidResult(createdUser);
+        }
+
+        private User EncryptPasswordAndCreateUser(UserSignUpRequest request)
+        {
             request.Password.Encrypt(
                 passwordEncryptionService: passwordEncryptionService,
                 securePseudoRandomGenerator: securePseudoRandomGenerator);
-            var user = User.Crate(
-                email: request.Email,
-                password: request.Password
-            );
-            var createdUser = userRepository.Create(user);
-            return CreationResult<User, SignUpError>.CreateValidResult(createdUser);
+            return User.Create(email: request.Email, password: request.Password);
         }
     }
 

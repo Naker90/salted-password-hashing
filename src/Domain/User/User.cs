@@ -16,7 +16,7 @@ namespace SaltedPasswordHashing.Src.Domain.User
             this.Password = password;
         }
 
-        public static User Crate(Email email, Password password)
+        public static User Create(Email email, Password password)
         {
             return new User(
                 id: Id.Create(),
