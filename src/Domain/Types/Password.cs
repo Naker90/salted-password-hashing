@@ -1,14 +1,17 @@
+using SaltedPasswordHashing.Src.Domain.Security;
 using System.Linq;
 
 namespace SaltedPasswordHashing.Src.Domain.Types
 {
     public sealed class Password
     {
-        public string Value { get; }
-        
+        public string Value { get; private set; }
+        public Salt SaltProp { get; private set; }
+
         private Password(string value)
         {
-            Value = value;
+            this.Value = value;
+            this.SaltProp = null;
         }
         
         public static CreationResult<Password> Create(string value)
@@ -22,6 +25,16 @@ namespace SaltedPasswordHashing.Src.Domain.Types
             }
             Password password = new Password(value: value);
             return CreationResult<Password>.CreateValidResult(result: password);
+        }
+
+        public void Encrypt(
+            PasswordEncryptionService passwordEncryptionService,
+            SecurePseudoRandomGenerator securePseudoRandomGenerator)
+        {
+            Salt salt = securePseudoRandomGenerator.Generate();
+            var encryptedPassword = passwordEncryptionService.Encrypt(this.Value, salt);
+            this.Value = encryptedPassword;
+            this.SaltProp = salt;
         }
 
         private static bool IsValidPassword(string password)
@@ -43,6 +56,15 @@ namespace SaltedPasswordHashing.Src.Domain.Types
 
             bool ContainsAtLeastOfOneSymbol(){
                 return password.Any(char.IsSymbol);
+            }
+        }
+
+        public sealed class Salt
+        {
+            public long Value { get; }
+            public Salt(long value)
+            {
+                this.Value = value;
             }
         }
     }

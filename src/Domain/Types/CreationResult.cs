@@ -1,3 +1,5 @@
+using System;
+
 namespace SaltedPasswordHashing.Src.Domain.Types
 {
     public sealed class CreationResult<T> where T : class
@@ -15,6 +17,9 @@ namespace SaltedPasswordHashing.Src.Domain.Types
 
         public static CreationResult<T> CreateValidResult(T result)
         {
+            if(result == null){
+                throw new ArgumentNullException();
+            }
             return new CreationResult<T>(
                 result: result,
                 error: null,
