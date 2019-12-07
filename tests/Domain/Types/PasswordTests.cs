@@ -17,13 +17,12 @@ namespace SaltedPasswordHashing.Test.Domain.Types
             Assert.AreEqual(result.Result.Value, password);
         }
 
-
-        //TODO: testar tambien el vacio o espacio en blanco
-        [TestMethod]
-        public void ShouldReturnsErrorWhenPasswordIsEmpty()
+        [DataTestMethod]
+        [DataRow(null)]
+        [DataRow("")]
+        [DataRow(" ")]
+        public void ShouldReturnsErrorWhenPasswordIsEmpty(string password)
         {
-            string password = null;
-
             CreationResult<Password, Error> result = Password.Create(value: password);
 
             Assert.IsFalse(result.IsValid);
