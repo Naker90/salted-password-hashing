@@ -67,6 +67,7 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
             var result = command.Execute(request);
 
             Assert.IsFalse(result.IsValid);
+            Assert.AreEqual(result.Error, SignUpError.UserAlreadyExist);
             securePseudoRandomGenerator
                 .Verify(x => x.Generate(), Times.Never());
             passwordEncryptionService
