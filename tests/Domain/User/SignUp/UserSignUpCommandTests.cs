@@ -32,6 +32,9 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
         public void ShouldSignUpUser()
         {
             UserSignUpRequest request = CreateRequest();
+            userRepository
+                .Setup(x => x.Exist(request.Email))
+                .Returns(false);
             var passwordSalt = new Password.Salt(value: 4235346654);
             securePseudoRandomGenerator
                 .Setup(x => x.Generate())
@@ -51,6 +54,25 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
             var result = command.Execute(request);
 
             Assert.IsTrue(result.IsValid);
+        }
+
+        [TestMethod]
+        public void ShouldReturnErrorWhenUserAlreadyExist()
+        {
+            UserSignUpRequest request = CreateRequest();
+            userRepository
+                .Setup(x => x.Exist(request.Email))
+                .Returns(true);
+
+            var result = command.Execute(request);
+
+            Assert.IsFalse(result.IsValid);
+            securePseudoRandomGenerator
+                .Verify(x => x.Generate(), Times.Never());
+            passwordEncryptionService
+                .Verify(x => x.Encrypt(It.IsAny<string>(), It.IsAny<Password.Salt>()), Times.Never());
+            userRepository
+                .Verify(x => x.Create(It.IsAny<SaltedPasswordHashing.Src.Domain.User.User>()), Times.Never());
         }
 
         private UserSignUpRequest CreateRequest(){

@@ -22,6 +22,9 @@ namespace SaltedPasswordHashing.Src.Domain.User.SignUp
 
         public CreationResult<User> Execute(UserSignUpRequest request)
         {   
+            if(userRepository.Exist(email: request.Email)){
+                return CreationResult<User>.CreateInvalidResult(Error.Required); 
+            }
             request.Password.Encrypt(
                 passwordEncryptionService: passwordEncryptionService,
                 securePseudoRandomGenerator: securePseudoRandomGenerator);
