@@ -1,17 +1,20 @@
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using System;
 
 namespace SaltedPasswordHashing.Src.Domain.Types
 {
-    public sealed class RequestValidationResult<T> where T : class
+    public sealed class RequestValidationResult<TResult, TError> 
+        where TResult : class
+        where TError : struct, IConvertible
     {
-        public T Result { get; }
-        public ReadOnlyCollection<ValidationError> Errors { get; }
+        public TResult Result { get; }
+        public ReadOnlyCollection<ValidationError<TError>> Errors { get; }
         public bool IsValid { get; }
 
         private RequestValidationResult(
-            T result, 
-            ReadOnlyCollection<ValidationError> errors, 
+            TResult result, 
+            ReadOnlyCollection<ValidationError<TError>> errors, 
             bool isValid)
         {
             Result = result;
@@ -19,30 +22,30 @@ namespace SaltedPasswordHashing.Src.Domain.Types
             IsValid = isValid;
         }
 
-        public static RequestValidationResult<T> CreateValidResult(T result)
+        public static RequestValidationResult<TResult, TError> CreateValidResult(TResult result)
         {
-            return new RequestValidationResult<T>(
+            return new RequestValidationResult<TResult, TError>(
                 result: result,
-                errors: new List<ValidationError>().AsReadOnly(),
+                errors: new List<ValidationError<TError>>().AsReadOnly(),
                 isValid: true);
         }
 
-        public static RequestValidationResult<T> CreateInvalidResult(
-            ReadOnlyCollection<ValidationError> errors)
+        public static RequestValidationResult<TResult, TError> CreateInvalidResult(
+            ReadOnlyCollection<ValidationError<TError>> errors)
         {
-            return new RequestValidationResult<T>(
+            return new RequestValidationResult<TResult, TError>(
                 result: null,
                 errors: errors,
                 isValid: false);
         }
     }
 
-    public sealed class ValidationError
+    public sealed class ValidationError<TError> where TError : struct, IConvertible
     {
         public string FieldId { get; }
-        public Error Error { get; }
+        public TError Error { get; }
 
-        public ValidationError(string fieldId, Error error)
+        public ValidationError(string fieldId, TError error)
         {
             FieldId = fieldId;
             Error = error;

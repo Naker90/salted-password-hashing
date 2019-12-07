@@ -14,17 +14,17 @@ namespace SaltedPasswordHashing.Src.Domain.Types
             this.SaltProp = null;
         }
         
-        public static CreationResult<Password> Create(string value)
+        public static CreationResult<Password, Error> Create(string value)
         {
             if(string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
             {
-                return CreationResult<Password>.CreateInvalidResult(error: Error.Required);
+                return CreationResult<Password, Error>.CreateInvalidResult(error: Error.Required);
             }
             if(!IsValidPassword(password: value)){
-                return CreationResult<Password>.CreateInvalidResult(error: Error.InvalidFormat);
+                return CreationResult<Password, Error>.CreateInvalidResult(error: Error.InvalidFormat);
             }
             Password password = new Password(value: value);
-            return CreationResult<Password>.CreateValidResult(result: password);
+            return CreationResult<Password, Error>.CreateValidResult(result: password);
         }
 
         public void Encrypt(

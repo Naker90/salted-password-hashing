@@ -20,10 +20,10 @@ namespace SaltedPasswordHashing.Src.Domain.User.SignUp
             this.securePseudoRandomGenerator = securePseudoRandomGenerator;
         }
 
-        public CreationResult<User> Execute(UserSignUpRequest request)
+        public CreationResult<User, SignUpError> Execute(UserSignUpRequest request)
         {   
             if(userRepository.Exist(email: request.Email)){
-                return CreationResult<User>.CreateInvalidResult(Error.Required); 
+                return CreationResult<User, SignUpError>.CreateInvalidResult(SignUpError.UserAlreadyExist); 
             }
             request.Password.Encrypt(
                 passwordEncryptionService: passwordEncryptionService,
@@ -33,7 +33,12 @@ namespace SaltedPasswordHashing.Src.Domain.User.SignUp
                 password: request.Password
             );
             var createdUser = userRepository.Create(user);
-            return CreationResult<User>.CreateValidResult(createdUser);
+            return CreationResult<User, SignUpError>.CreateValidResult(createdUser);
         }
+    }
+
+    public enum SignUpError
+    {
+        UserAlreadyExist
     }
 }

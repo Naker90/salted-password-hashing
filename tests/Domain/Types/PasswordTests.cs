@@ -11,7 +11,7 @@ namespace SaltedPasswordHashing.Test.Domain.Types
         {
             var password = "ValidPassword1$";
 
-            CreationResult<Password> result = Password.Create(value: password);
+            CreationResult<Password, Error> result = Password.Create(value: password);
 
             Assert.IsTrue(result.IsValid);
             Assert.AreEqual(result.Result.Value, password);
@@ -24,7 +24,7 @@ namespace SaltedPasswordHashing.Test.Domain.Types
         {
             string password = null;
 
-            CreationResult<Password> result = Password.Create(value: password);
+            CreationResult<Password, Error> result = Password.Create(value: password);
 
             Assert.IsFalse(result.IsValid);
             Assert.AreEqual(result.Error, Error.Required);
@@ -35,7 +35,7 @@ namespace SaltedPasswordHashing.Test.Domain.Types
         {
             var password = "short";
 
-            CreationResult<Password> result = Password.Create(value: password);
+            CreationResult<Password, Error> result = Password.Create(value: password);
 
             Assert.IsFalse(result.IsValid);
             Assert.AreEqual(result.Error, Error.InvalidFormat);
@@ -46,7 +46,7 @@ namespace SaltedPasswordHashing.Test.Domain.Types
         {
             var password = "12345678+";
 
-            CreationResult<Password> result = Password.Create(value: password);
+            CreationResult<Password, Error> result = Password.Create(value: password);
 
             Assert.IsFalse(result.IsValid);
             Assert.AreEqual(result.Error, Error.InvalidFormat);
@@ -57,7 +57,7 @@ namespace SaltedPasswordHashing.Test.Domain.Types
         {
             var password = "lowercasepassword1$";
 
-            CreationResult<Password> result = Password.Create(value: password);
+            CreationResult<Password, Error> result = Password.Create(value: password);
 
             Assert.IsFalse(result.IsValid);
             Assert.AreEqual(result.Error, Error.InvalidFormat);
@@ -68,7 +68,7 @@ namespace SaltedPasswordHashing.Test.Domain.Types
         {
             var password = "Passw0rdWith0utSymb0ls";
 
-            CreationResult<Password> result = Password.Create(value: password);
+            CreationResult<Password, Error> result = Password.Create(value: password);
 
             Assert.IsFalse(result.IsValid);
             Assert.AreEqual(result.Error, Error.InvalidFormat);

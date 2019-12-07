@@ -14,7 +14,7 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
             var email = "user@email.com";
             var password = "Passw0rd$";
 
-            RequestValidationResult<UserSignUpRequest> result = UserSignUpRequest.Create(
+            RequestValidationResult<UserSignUpRequest, Error> result = UserSignUpRequest.Create(
                 email: email,
                 password: password
             ); 
@@ -27,7 +27,7 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
         [TestMethod]
         public void ShouldReturnsErrorWhenEmailCreationIsFail()
         {
-            RequestValidationResult<UserSignUpRequest> result = UserSignUpRequest.Create(
+            RequestValidationResult<UserSignUpRequest, Error> result = UserSignUpRequest.Create(
                 email: string.Empty,
                 password: "Passw0rd$"
             ); 
@@ -41,7 +41,7 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
         [TestMethod]
         public void ShouldReturnsErrorWhenCreationIsFail()
         {
-            RequestValidationResult<UserSignUpRequest> result = UserSignUpRequest.Create(
+            RequestValidationResult<UserSignUpRequest, Error> result = UserSignUpRequest.Create(
                 email: "user@email.com",
                 password: string.Empty
             ); 

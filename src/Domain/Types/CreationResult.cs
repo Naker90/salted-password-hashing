@@ -2,33 +2,35 @@ using System;
 
 namespace SaltedPasswordHashing.Src.Domain.Types
 {
-    public sealed class CreationResult<T> where T : class
+    public sealed class CreationResult<TResult, TError> 
+        where TResult : class
+        where TError : struct, IConvertible
     {
-        public T Result { get; }
-        public Error? Error { get; }
+        public TResult Result { get; }
+        public TError? Error { get; }
         public bool IsValid { get; }
 
-        private CreationResult(T result, Error? error, bool isValid)
+        private CreationResult(TResult result, TError? error, bool isValid)
         {
             Result = result;
             Error = error;
             IsValid = isValid;
         }
 
-        public static CreationResult<T> CreateValidResult(T result)
+        public static CreationResult<TResult, TError> CreateValidResult(TResult result)
         {
             if(result == null){
                 throw new ArgumentNullException();
             }
-            return new CreationResult<T>(
+            return new CreationResult<TResult, TError>(
                 result: result,
                 error: null,
                 isValid: true);
         }
 
-        public static CreationResult<T> CreateInvalidResult(Error error)
+        public static CreationResult<TResult, TError> CreateInvalidResult(TError error)
         {
-            return new CreationResult<T>(
+            return new CreationResult<TResult, TError>(
                 result: null,
                 error: error,
                 isValid: false);
