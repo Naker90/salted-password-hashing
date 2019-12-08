@@ -1,5 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SaltedPasswordHashing.Src.Domain.Types;
+using System;
 
 namespace SaltedPasswordHashing.Test.Domain.Types
 {
@@ -17,6 +18,15 @@ namespace SaltedPasswordHashing.Test.Domain.Types
 
             Assert.IsTrue(result.IsValid);
             Assert.AreEqual(result.Result.Value, resultForTest.Value);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ShouldNotCreateValidResultWithNull()
+        {   
+            var result = CreationResult<ResultForTest, ErrorForTest>.CreateValidResult(
+                result: null
+            ); 
         }
 
         [TestMethod]
