@@ -4,7 +4,7 @@ using SaltedPasswordHashing.Src.Domain.Types;
 
 namespace SaltedPasswordHashing.Src.Security
 {
-    public class RNGCSecurePseudoRandomGenerator : SecurePseudoRandomGenerator
+    public class RNGSecurePseudoRandomGenerator : SecurePseudoRandomGenerator
     {
         public Password.Salt Generate()
         {
