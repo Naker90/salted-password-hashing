@@ -6,11 +6,11 @@ namespace SaltedPasswordHashing.Test.Domain.Types
     [TestClass]
     public class CreationResultTests
     {
-        
         [TestMethod]
         public void ShouldCreateValidResult()
         {
             var resultForTest = new ResultForTest(value: "test");
+            
             var result = CreationResult<ResultForTest, ErrorForTest>.CreateValidResult(
                 result: resultForTest
             ); 
@@ -19,6 +19,16 @@ namespace SaltedPasswordHashing.Test.Domain.Types
             Assert.AreEqual(result.Result.Value, resultForTest.Value);
         }
 
+        [TestMethod]
+        public void ShouldCreateInvalidResult()
+        {   
+            var result = CreationResult<ResultForTest, ErrorForTest>.CreateInvalidResult(
+                error: ErrorForTest.AnyError
+            ); 
+
+            Assert.IsFalse(result.IsValid);
+            Assert.AreEqual(result.Error, ErrorForTest.AnyError);
+        }
     }
 
     class ResultForTest
