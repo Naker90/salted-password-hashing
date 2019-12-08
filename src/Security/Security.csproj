@@ -5,4 +5,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj"/>
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="BCrypt-Official" Version="0.1.109"/>
+  </ItemGroup>
 </Project>
