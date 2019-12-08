@@ -29,19 +29,19 @@ namespace SaltedPasswordHashing.Test.Domain.Types
             Assert.IsFalse(result.IsValid);
             Assert.AreEqual(result.Error, ErrorForTest.AnyError);
         }
-    }
 
-    class ResultForTest
-    {
-        public string Value { get; }
-        public ResultForTest(string value)
+        private class ResultForTest
         {
-            this.Value = value;
+            public string Value { get; }
+            public ResultForTest(string value)
+            {
+                this.Value = value;
+            }
         }
-    }
 
-    enum ErrorForTest
-    {
-        AnyError
+        private enum ErrorForTest
+        {
+            AnyError
+        }
     }
 }
