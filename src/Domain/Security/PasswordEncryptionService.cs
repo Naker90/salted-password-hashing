@@ -4,6 +4,6 @@ namespace SaltedPasswordHashing.Src.Domain.Security
 {
     public interface PasswordEncryptionService
     {
-        string Encrypt(string password, Password.Salt salt);
+        string Encrypt(string password);
     }
 }

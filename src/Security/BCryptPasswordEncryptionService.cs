@@ -5,10 +5,9 @@ namespace SaltedPasswordHashing.Src.Security
 {
     public class BCryptPasswordEncryptionService : PasswordEncryptionService
     {
-        string Encrypt(string password, Password.Salt salt)
+        string Encrypt(string password)
         {
-            var saltedPassword = password + salt.Value;
-            return BCrypt.Net.BCrypt.HashPassword(saltedPassword);
+            return BCrypt.Net.BCrypt.HashPassword(password);
         }
 
         /*/

@@ -32,7 +32,8 @@ namespace SaltedPasswordHashing.Src.Domain.Types
             SecurePseudoRandomGenerator securePseudoRandomGenerator)
         {
             Salt salt = securePseudoRandomGenerator.Generate();
-            var encryptedPassword = passwordEncryptionService.Encrypt(this.Value, salt);
+            var saltedPassword = this.Value + salt;
+            var encryptedPassword = passwordEncryptionService.Encrypt(saltedPassword);
             this.Value = encryptedPassword;
             this.SaltProp = salt;
         }
