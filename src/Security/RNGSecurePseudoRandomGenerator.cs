@@ -12,8 +12,7 @@ namespace SaltedPasswordHashing.Src.Security
             {
                 byte[] data = new byte[4]; 
                 rng.GetBytes(data);
-                int salt = BitConverter.ToInt32(data, 0);
-                return new Password.Salt(value: salt);
+                return new Password.Salt(value: data.ToString());
             }
         }   
     }

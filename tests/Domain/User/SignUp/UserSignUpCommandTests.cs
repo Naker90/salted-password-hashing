@@ -35,7 +35,7 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
             userRepository
                 .Setup(x => x.Exist(request.Email))
                 .Returns(false);
-            var passwordSalt = new Password.Salt(value: 4235346654);
+            var passwordSalt = new Password.Salt(value: "4235346654");
             securePseudoRandomGenerator
                 .Setup(x => x.Generate())
                 .Returns(passwordSalt);

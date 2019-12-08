@@ -94,7 +94,7 @@ namespace SaltedPasswordHashing.Test.Domain.Types
             [TestMethod]
             public void ShouldEncryptPasswordWhenRequested()
             {
-                var passwordSalt = new Password.Salt(value: 4235346654);
+                var passwordSalt = new Password.Salt(value: "4235346654");
                 securePseudoRandomGenerator
                     .Setup(x => x.Generate())
                     .Returns(passwordSalt);

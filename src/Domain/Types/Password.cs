@@ -61,8 +61,8 @@ namespace SaltedPasswordHashing.Src.Domain.Types
 
         public sealed class Salt
         {
-            public long Value { get; }
-            public Salt(long value)
+            public string Value { get; }
+            public Salt(string value)
             {
                 this.Value = value;
             }

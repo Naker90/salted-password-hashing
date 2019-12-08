@@ -7,8 +7,7 @@ namespace SaltedPasswordHashing.Src.Security
     {
         string Encrypt(string password, Password.Salt salt)
         {
-            var salt = salt.Value.ToString();
-            var saltedPassword = password + salt;
+            var saltedPassword = password + salt.Value;
             return BCrypt.Net.BCrypt.HashPassword(saltedPassword);
         }
 
