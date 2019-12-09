@@ -110,7 +110,7 @@ namespace SaltedPasswordHashing.Test.Domain.Types
                     .Returns(passwordSalt);
                 var encryptedPasswordOutput = "$2y$asdasdVDFJVw4rtfAFVSDfjc34t";
                 passwordEncryptionService
-                    .Setup(x => x.Encrypt(password.Value + passwordSalt))
+                    .Setup(x => x.Encrypt(password.Value + passwordSalt.Value))
                     .Returns(encryptedPasswordOutput);
 
                 password.Encrypt(

@@ -41,7 +41,7 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
                 .Returns(passwordSalt);
             var encryptedPasswordOutput = "$2y$asdasdVDFJVw4rtfAFVSDfjc34t";
             passwordEncryptionService
-                .Setup(x => x.Encrypt(request.Password.Value + passwordSalt))
+                .Setup(x => x.Encrypt(request.Password.Value + passwordSalt.Value))
                 .Returns(encryptedPasswordOutput);
 
             var result = command.Execute(request);

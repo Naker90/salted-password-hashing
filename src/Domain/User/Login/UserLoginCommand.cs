@@ -34,8 +34,6 @@ namespace SaltedPasswordHashing.Src.Domain.User.Login
         private bool AreUserCredentialsValid(UserLoginRequest request, User user)
         {
             var saltedPassword = request.Password.Value + user.Password.SaltProp.Value;
-            Console.WriteLine(user.Password.Value);
-            Console.WriteLine(saltedPassword);
             return passwordEncryptionService.Verify(
                 hashedPassword: user.Password.Value, 
                 passwordIntent: saltedPassword);

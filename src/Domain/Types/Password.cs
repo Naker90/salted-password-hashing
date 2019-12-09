@@ -1,5 +1,6 @@
 using SaltedPasswordHashing.Src.Domain.Security;
 using System.Linq;
+using System;
 
 namespace SaltedPasswordHashing.Src.Domain.Types
 {
@@ -43,7 +44,7 @@ namespace SaltedPasswordHashing.Src.Domain.Types
             SecurePseudoRandomGenerator securePseudoRandomGenerator)
         {
             Salt salt = securePseudoRandomGenerator.Generate();
-            var saltedPassword = this.Value + salt;
+            var saltedPassword = this.Value + salt.Value;
             var encryptedPassword = passwordEncryptionService.Encrypt(saltedPassword);
             this.Value = encryptedPassword;
             this.SaltProp = salt;
