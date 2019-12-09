@@ -4,7 +4,7 @@ namespace SaltedPasswordHashing.Src.Domain.User
 {
     public interface UserRepository
     {
-        User Create(User user);
+        void Create(User user);
         bool Exist(Email email);
     }
 }

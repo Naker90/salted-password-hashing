@@ -4,6 +4,8 @@ using System;
 using System.IO;
 using System.Text;
 using CsvHelper;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SaltedPasswordHashing.Src.Repositories
 {
@@ -11,9 +13,9 @@ namespace SaltedPasswordHashing.Src.Repositories
     {
 
         private const string DELIMITER = ";";
-        private const string ABSOLUTE_FILE_PATH = "";
+        private const string ABSOLUTE_FILE_PATH = "/home/naker90/Desktop/Projects/salted-password-hashing/users.csv";
 
-        public User Create(User user)
+        public void Create(User user)
         {
             using (TextWriter writer = File.AppendText(ABSOLUTE_FILE_PATH))
             using (var csvWriter = new CsvWriter(writer))
@@ -22,15 +24,17 @@ namespace SaltedPasswordHashing.Src.Repositories
                 csvWriter.Configuration.HasHeaderRecord = true;
                 csvWriter.Configuration.AutoMap<User.PersistanceState>();
 
-                csvWriter.WriteHeader<User.PersistanceState>();
                 csvWriter.WriteRecords(new [] { user.State });
 
                 writer.Flush();
-                return user;
             }
         }
 
-        public bool Exist(string email) {
+        public bool Exist(Email email) {
+            if(!File.Exists(ABSOLUTE_FILE_PATH))
+            {
+                return false;
+            }
             List<string> result = new List<string>();
             string value;
             using (TextReader fileReader = File.OpenText(ABSOLUTE_FILE_PATH)) {
@@ -42,7 +46,7 @@ namespace SaltedPasswordHashing.Src.Repositories
                     }
                 }
             }
-            return result.Exist(x => x.Contains(email));
+            return result.Any(x => x.Contains(email.Value));
         }
     }
 }

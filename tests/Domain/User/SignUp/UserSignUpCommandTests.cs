@@ -43,17 +43,16 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
             passwordEncryptionService
                 .Setup(x => x.Encrypt(request.Password.Value + passwordSalt))
                 .Returns(encryptedPasswordOutput);
-            userRepository
-                .Setup(x => x.Create(It.Is<SaltedPasswordHashing.Src.Domain.User.User>(x => 
-                    x.IdProp.Value != null
-                    && x.Email.Value == request.Email.Value
-                    && x.Password.Value == encryptedPasswordOutput
-                    && x.Password.SaltProp.Value == passwordSalt.Value)))
-                .Returns(BuildUser());
 
             var result = command.Execute(request);
 
             Assert.IsTrue(result.IsValid);
+            userRepository
+                .Verify(x => x.Create(It.Is<SaltedPasswordHashing.Src.Domain.User.User>(x => 
+                    x.IdProp.Value != null
+                    && x.Email.Value == request.Email.Value
+                    && x.Password.Value == encryptedPasswordOutput
+                    && x.Password.SaltProp.Value == passwordSalt.Value)), Times.Once());
         }
 
         [TestMethod]

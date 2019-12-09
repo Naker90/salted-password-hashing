@@ -26,8 +26,8 @@ namespace SaltedPasswordHashing.Src.Domain.User.SignUp
                 return CreationResult<User, SignUpError>.CreateInvalidResult(SignUpError.UserAlreadyExist); 
             }
             var user = EncryptPasswordAndCreateUser(request);
-            var createdUser = userRepository.Create(user);
-            return CreationResult<User, SignUpError>.CreateValidResult(createdUser);
+            userRepository.Create(user);
+            return CreationResult<User, SignUpError>.CreateValidResult(user);
         }
 
         private User EncryptPasswordAndCreateUser(UserSignUpRequest request)

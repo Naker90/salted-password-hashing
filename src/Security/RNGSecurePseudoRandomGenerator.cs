@@ -1,6 +1,7 @@
-using System.Security.Cryptography.RNGCryptoServiceProvider;
+using System.Security.Cryptography;
 using SaltedPasswordHashing.Src.Domain.Security;
 using SaltedPasswordHashing.Src.Domain.Types;
+using System;
 
 namespace SaltedPasswordHashing.Src.Security
 {
@@ -10,9 +11,10 @@ namespace SaltedPasswordHashing.Src.Security
         {
             using (RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider())
             {
-                byte[] data = new byte[4]; 
+                byte[] data = new byte[30]; 
                 rng.GetBytes(data);
-                return new Password.Salt(value: data.ToString());
+                var value = BitConverter.ToString(data, 0).Replace("-", "");
+                return new Password.Salt(value: value);
             }
         }   
     }
