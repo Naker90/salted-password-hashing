@@ -13,7 +13,7 @@ namespace SaltedPasswordHashing.Test.Domain.Types
         {
             var password = "ValidPassword1$";
 
-            CreationResult<Password, Error> result = Password.Create(value: password);
+            CreationResult<Password, Error> result = Password.CreateAndValidate(value: password);
 
             Assert.IsTrue(result.IsValid);
             Assert.AreEqual(result.Result.Value, password);
@@ -35,7 +35,7 @@ namespace SaltedPasswordHashing.Test.Domain.Types
         [DataRow(" ")]
         public void ShouldReturnsErrorWhenPasswordIsEmpty(string password)
         {
-            CreationResult<Password, Error> result = Password.Create(value: password);
+            CreationResult<Password, Error> result = Password.CreateAndValidate(value: password);
 
             Assert.IsFalse(result.IsValid);
             Assert.AreEqual(result.Error, Error.Required);
@@ -46,7 +46,7 @@ namespace SaltedPasswordHashing.Test.Domain.Types
         {
             var password = "short";
 
-            CreationResult<Password, Error> result = Password.Create(value: password);
+            CreationResult<Password, Error> result = Password.CreateAndValidate(value: password);
 
             Assert.IsFalse(result.IsValid);
             Assert.AreEqual(result.Error, Error.InvalidFormat);
@@ -57,7 +57,7 @@ namespace SaltedPasswordHashing.Test.Domain.Types
         {
             var password = "12345678+";
 
-            CreationResult<Password, Error> result = Password.Create(value: password);
+            CreationResult<Password, Error> result = Password.CreateAndValidate(value: password);
 
             Assert.IsFalse(result.IsValid);
             Assert.AreEqual(result.Error, Error.InvalidFormat);
@@ -68,7 +68,7 @@ namespace SaltedPasswordHashing.Test.Domain.Types
         {
             var password = "lowercasepassword1$";
 
-            CreationResult<Password, Error> result = Password.Create(value: password);
+            CreationResult<Password, Error> result = Password.CreateAndValidate(value: password);
 
             Assert.IsFalse(result.IsValid);
             Assert.AreEqual(result.Error, Error.InvalidFormat);
@@ -79,7 +79,7 @@ namespace SaltedPasswordHashing.Test.Domain.Types
         {
             var password = "Passw0rdWith0utSymb0ls";
 
-            CreationResult<Password, Error> result = Password.Create(value: password);
+            CreationResult<Password, Error> result = Password.CreateAndValidate(value: password);
 
             Assert.IsFalse(result.IsValid);
             Assert.AreEqual(result.Error, Error.InvalidFormat);
@@ -98,7 +98,7 @@ namespace SaltedPasswordHashing.Test.Domain.Types
             {
                 passwordEncryptionService = new Mock<PasswordEncryptionService>();
                 securePseudoRandomGenerator = new Mock<SecurePseudoRandomGenerator>();
-                password = Password.Create(value: "Passw0rd$").Result;
+                password = Password.CreateAndValidate(value: "Passw0rd$").Result;
             }
 
             [TestMethod]

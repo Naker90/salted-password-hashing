@@ -19,7 +19,7 @@ namespace SaltedPasswordHashing.Src.Domain.Types
             return new Password(value: value);
         }
 
-        public static CreationResult<Password, Error> Create(string value)
+        public static CreationResult<Password, Error> CreateAndValidate(string value)
         {
             if(string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
             {
