@@ -35,9 +35,11 @@ namespace ConsoleApplication
         static void SignUp()
         {
             Console.WriteLine("Email: ");
-            var email = Console.ReadLine();
+            //var email = Console.ReadLine();
+            var email = "antonio@gmail.com";
             Console.WriteLine("Password: ");
-            var password = Console.ReadLine();
+            //var password = Console.ReadLine();
+            var password = "Passw0rd$";
             var requestResult = UserSignUpRequest.Create(
                 email: email,
                 password: password
