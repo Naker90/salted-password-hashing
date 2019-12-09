@@ -62,6 +62,21 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
             Assert.AreEqual(result.Error, LoginError.InvalidCredentials);
         }
 
+        [TestMethod]
+        public void ShouldReturnsErrorWhenUserNotFound()
+        {
+            SaltedPasswordHashing.Src.Domain.User.User user = null;
+            userRepository
+                .Setup(x => x.FindBy(It.IsAny<Email>()))
+                .Returns(user);
+
+            var result = command.Execute(CreateRequest());
+
+            Assert.IsFalse(result.IsValid);
+            Assert.AreEqual(result.Error, LoginError.UserNotFound);
+            passwordEncryptionService.Verify(x => x.Encrypt(It.IsAny<string>()), Times.Never());
+        }
+
         private UserLoginRequest CreateRequest(){
             return UserLoginRequest.Create(
                 email: "user@email.com",                

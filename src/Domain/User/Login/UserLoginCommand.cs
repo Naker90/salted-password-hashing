@@ -20,6 +20,9 @@ namespace SaltedPasswordHashing.Src.Domain.User.Login
         public CreationResult<User, LoginError> Execute(UserLoginRequest request)
         {   
             var user = userRepository.FindBy(request.Email);
+            if(user == null){
+                return CreationResult<User, LoginError>.CreateInvalidResult(LoginError.UserNotFound);
+            }
             var saltedPassword = request.Password.Value + user.Password.SaltProp.Value;
             var expectedPassword = passwordEncryptionService.Encrypt(password: saltedPassword);
             if(user.Password.Value != expectedPassword)
@@ -32,6 +35,7 @@ namespace SaltedPasswordHashing.Src.Domain.User.Login
 
     public enum LoginError
     {
-        InvalidCredentials
+        InvalidCredentials,
+        UserNotFound
     }
 }
