@@ -43,6 +43,25 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
             Assert.IsTrue(result.IsValid);
         }
 
+        [TestMethod]
+        public void ShouldReturnsErrorWhenCredentialsAreInvalid()
+        {
+            UserLoginRequest request = CreateRequest();
+            var user = BuildUser(password: "$2y$asdasdVDFJVw4rtfAFVSDfjc34t");
+            userRepository
+                .Setup(x => x.FindBy(It.IsAny<Email>()))
+                .Returns(user);
+            var encryptedPassword = "differentEncryptedPassword";
+            passwordEncryptionService
+                .Setup(x => x.Encrypt(It.IsAny<string>()))
+                .Returns(encryptedPassword);
+
+            var result = command.Execute(request);
+
+            Assert.IsFalse(result.IsValid);
+            Assert.AreEqual(result.Error, LoginError.InvalidCredentials);
+        }
+
         private UserLoginRequest CreateRequest(){
             return UserLoginRequest.Create(
                 email: "user@email.com",                
