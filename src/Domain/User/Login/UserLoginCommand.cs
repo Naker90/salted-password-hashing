@@ -23,13 +23,19 @@ namespace SaltedPasswordHashing.Src.Domain.User.Login
             if(user == null){
                 return CreationResult<User, LoginError>.CreateInvalidResult(LoginError.UserNotFound);
             }
-            var saltedPassword = request.Password.Value + user.Password.SaltProp.Value;
-            var expectedPassword = passwordEncryptionService.Encrypt(password: saltedPassword);
-            if(user.Password.Value != expectedPassword)
+            if(!AreUserCredentialsValid(request: request, user: user))
             {
                 return CreationResult<User, LoginError>.CreateInvalidResult(LoginError.InvalidCredentials);
             }
             return CreationResult<User, LoginError>.CreateValidResult(user);
+        }
+
+        private bool AreUserCredentialsValid(UserLoginRequest request, User user)
+        {
+            
+            var saltedPassword = request.Password.Value + user.Password.SaltProp.Value;
+            var expectedPassword = passwordEncryptionService.Encrypt(password: saltedPassword);
+            return user.Password.Value == expectedPassword;
         }
     }
 
