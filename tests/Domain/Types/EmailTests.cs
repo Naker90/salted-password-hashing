@@ -17,6 +17,16 @@ namespace SaltedPasswordHashing.Test.Domain.Types
             Assert.AreEqual(result.Result.Value, userEmail);
         }
 
+        [TestMethod]
+        public void ShouldCreatesValidEmailWithoutValidate()
+        {
+            var userEmail = "anyEmail";
+
+            Email email = Email.CreateWithoutValidate(value: userEmail);
+
+            Assert.AreEqual(email.Value, userEmail);
+        }
+
         [DataTestMethod]
         [DataRow(null)]
         [DataRow("")]

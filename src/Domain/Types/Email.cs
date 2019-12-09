@@ -9,6 +9,11 @@ namespace SaltedPasswordHashing.Src.Domain.Types
             Value = value;
         }
         
+        public static Email CreateWithoutValidate(string value)
+        {
+            return new Email(value: value);
+        }
+
         public static CreationResult<Email, Error> Create(string value)
         {
             if(string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))

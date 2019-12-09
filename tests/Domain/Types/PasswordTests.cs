@@ -19,6 +19,16 @@ namespace SaltedPasswordHashing.Test.Domain.Types
             Assert.AreEqual(result.Result.Value, password);
         }
 
+        [TestMethod]
+        public void ShouldCreatesValidPasswordWithoutValidate()
+        {
+            var value = "anyPassword";
+
+            Password password = Password.CreateWithoutValidate(value: value);
+
+            Assert.AreEqual(password.Value, value);
+        }
+
         [DataTestMethod]
         [DataRow(null)]
         [DataRow("")]
