@@ -11,7 +11,7 @@ namespace SaltedPasswordHashing.Test.Domain.Types
         {
             var userEmail = "user@email.com";
 
-            CreationResult<Email, Error> result = Email.Create(value: userEmail);
+            CreationResult<Email, Error> result = Email.CreateAndValidate(value: userEmail);
 
             Assert.IsTrue(result.IsValid);
             Assert.AreEqual(result.Result.Value, userEmail);
@@ -33,7 +33,7 @@ namespace SaltedPasswordHashing.Test.Domain.Types
         [DataRow(" ")]
         public void ShouldReturnsErrorWhenEmailIsEmpty(string userEmail)
         {
-            CreationResult<Email, Error> result = Email.Create(value: userEmail);
+            CreationResult<Email, Error> result = Email.CreateAndValidate(value: userEmail);
 
             Assert.IsFalse(result.IsValid);
             Assert.AreEqual(result.Error, Error.Required);
@@ -44,7 +44,7 @@ namespace SaltedPasswordHashing.Test.Domain.Types
         {
             var userEmail = "invalid.com";
 
-            CreationResult<Email, Error> result = Email.Create(value: userEmail);
+            CreationResult<Email, Error> result = Email.CreateAndValidate(value: userEmail);
 
             Assert.IsFalse(result.IsValid);
             Assert.AreEqual(result.Error, Error.InvalidFormat);

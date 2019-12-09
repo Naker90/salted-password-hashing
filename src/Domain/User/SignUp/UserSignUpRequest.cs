@@ -20,7 +20,7 @@ namespace SaltedPasswordHashing.Src.Domain.User.SignUp
             string email,
             string password)
         {
-            CreationResult<Email, Error> emailCreationResult = Email.Create(value: email);
+            CreationResult<Email, Error> emailCreationResult = Email.CreateAndValidate(value: email);
             CreationResult<Password, Error> passwordCreationResult = Password.Create(value: password);
 
             var errors = BuilValidationErrorsFrom<Email, Error>(creationResult: emailCreationResult, fieldId: nameof(Email))

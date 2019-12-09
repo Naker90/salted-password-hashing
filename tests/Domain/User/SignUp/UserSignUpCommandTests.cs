@@ -83,7 +83,7 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
         }
 
         private SaltedPasswordHashing.Src.Domain.User.User BuildUser(){
-            var email = Email.Create("user@email.com").Result;
+            var email = Email.CreateAndValidate("user@email.com").Result;
             var password = Password.Create("Pass0word$").Result;
             return SaltedPasswordHashing.Src.Domain.User.User.Create(
                 email: email, 

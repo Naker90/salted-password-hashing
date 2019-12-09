@@ -14,7 +14,7 @@ namespace SaltedPasswordHashing.Src.Domain.Types
             return new Email(value: value);
         }
 
-        public static CreationResult<Email, Error> Create(string value)
+        public static CreationResult<Email, Error> CreateAndValidate(string value)
         {
             if(string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
             {
