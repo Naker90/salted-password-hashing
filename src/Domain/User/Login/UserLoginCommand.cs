@@ -1,6 +1,7 @@
 using SaltedPasswordHashing.Src.Domain.Types;
 using SaltedPasswordHashing.Src.Domain.Security;
 using SaltedPasswordHashing.Src.Domain.User;
+using System;
 
 namespace SaltedPasswordHashing.Src.Domain.User.Login
 {
@@ -32,10 +33,12 @@ namespace SaltedPasswordHashing.Src.Domain.User.Login
 
         private bool AreUserCredentialsValid(UserLoginRequest request, User user)
         {
-            
             var saltedPassword = request.Password.Value + user.Password.SaltProp.Value;
-            var expectedPassword = passwordEncryptionService.Encrypt(password: saltedPassword);
-            return user.Password.Value == expectedPassword;
+            Console.WriteLine(user.Password.Value);
+            Console.WriteLine(saltedPassword);
+            return passwordEncryptionService.Verify(
+                hashedPassword: user.Password.Value, 
+                passwordIntent: saltedPassword);
         }
     }
 

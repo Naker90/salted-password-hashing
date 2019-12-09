@@ -10,10 +10,9 @@ namespace SaltedPasswordHashing.Src.Security
             return BCrypt.Net.BCrypt.HashPassword(password);
         }
 
-        /*/
-        bool Verify()
+        public bool Verify(string hashedPassword, string passwordIntent)
         {
-            bool validPassword = BCrypt.Net.BCrypt.Verify("submittedPassword", "");
-        }*/
+            return BCrypt.Net.BCrypt.Verify(passwordIntent, hashedPassword);
+        }
     }
 }

@@ -4,7 +4,7 @@ namespace SaltedPasswordHashing.Src.Domain.Types
     {
         public string Value { get; }
         
-        private Email(string value)
+        public Email(string value)
         {
             Value = value;
         }

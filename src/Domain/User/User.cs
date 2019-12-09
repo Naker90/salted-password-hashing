@@ -21,6 +21,13 @@ namespace SaltedPasswordHashing.Src.Domain.User
             this.Password = password;
         }
 
+        public User(PersistanceState state)
+        {
+            this.IdProp = new Id(value: state.Id);
+            this.Email = new Email(value: state.Email);
+            this.Password = new Password(value: state.Password, salt: state.Salt);
+        } 
+
         public static User Create(Email email, Password password)
         {
             return new User(
@@ -53,6 +60,11 @@ namespace SaltedPasswordHashing.Src.Domain.User
             private Id(Guid value)
             {
                 this.Value = value;
+            }
+
+            public Id(string value)
+            {
+                this.Value = new Guid(value);
             }
 
             public static Id Create()
