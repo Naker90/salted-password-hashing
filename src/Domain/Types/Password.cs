@@ -11,7 +11,7 @@ namespace SaltedPasswordHashing.Src.Domain.Types
         private Password(string value)
         {
             this.Value = value;
-            this.SaltProp = null;
+            this.SaltProp = new Salt(value: null);
         }
         
         public static Password CreateWithoutValidate(string value)

@@ -6,5 +6,6 @@ namespace SaltedPasswordHashing.Src.Domain.User
     {
         void Create(User user);
         bool Exist(Email email);
+        User FindBy(Email email);
     }
 }
