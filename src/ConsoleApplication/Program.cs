@@ -35,20 +35,35 @@ namespace ConsoleApplication
         static void SignUp()
         {
             Console.WriteLine("Email: ");
-            //var email = Console.ReadLine();
-            var email = "antonio@gmail.com";
+            var email = Console.ReadLine();
             Console.WriteLine("Password: ");
-            //var password = Console.ReadLine();
-            var password = "Passw0rd$";
-            var requestResult = UserSignUpRequest.Create(
+            var password = Console.ReadLine();
+
+            var userSignUpRequestCreationResult = UserSignUpRequest.Create(
                 email: email,
                 password: password
             );
-            if(!requestResult.IsValid)
+            if(!userSignUpRequestCreationResult.IsValid)
             {
-                Console.WriteLine(requestResult.Errors);
-            }else{
-                var request = requestResult.Result;
+                PrintErrors();
+            }
+            else
+            {
+                ExecuteCommand();
+            }
+
+            void PrintErrors()
+            {
+                foreach (var error in userSignUpRequestCreationResult.Errors)
+                {
+                    Console.WriteLine(error.FieldId);
+                    Console.WriteLine(error.Error.ToString());   
+                }
+            }
+
+            void ExecuteCommand()
+            {
+                var request = userSignUpRequestCreationResult.Result;
                 var command = new UserSignUpCommand(
                     userRepository: new CsvUserRepository(),
                     passwordEncryptionService: new BCryptPasswordEncryptionService(),
@@ -57,7 +72,7 @@ namespace ConsoleApplication
                 var commandResult = command.Execute(request);
                 if(!commandResult.IsValid)
                 {
-                    Console.WriteLine(requestResult.Errors);
+                    Console.WriteLine(commandResult.Error.ToString());
                 }else{
                     Console.WriteLine("User registered successfuly!");
                 }
