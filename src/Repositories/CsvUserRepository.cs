@@ -42,11 +42,31 @@ namespace SaltedPasswordHashing.Src.Repositories
                 csv.Configuration.HasHeaderRecord = false;
                 while (csv.Read()) {
                     for(int i=0; csv.TryGetField<string>(i, out value); i++) {
-                            result.Add(value);
+                        result.Add(value);
                     }
                 }
             }
             return result.Any(x => x.Contains(email.Value));
+        }
+
+        public User FindBy(Email email)
+        {
+            if(!File.Exists(ABSOLUTE_FILE_PATH))
+            {
+                return null;
+            }
+            var result = new List<User>();
+            User user;
+            using (TextReader fileReader = File.OpenText(ABSOLUTE_FILE_PATH)) {
+                var csv = new CsvReader(fileReader);
+                csv.Configuration.HasHeaderRecord = false;
+                while (csv.Read()) {
+                    for(int i=0; csv.TryGetField<User>(i, out user); i++) {
+                        result.Add(user);
+                    }
+                }
+            }
+            return result.FirstOrDefault(x => x.Email.Value == email.Value);   
         }
     }
 }
