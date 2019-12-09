@@ -39,9 +39,9 @@ namespace SaltedPasswordHashing.Src.Repositories
                 while (csv.Read()) {
                     for(int i=0; csv.TryGetField<string>(i, out value); i++) {
                             result.Add(value);
-                        }
                     }
                 }
+            }
             return result.Exist(x => x.Contains(email));
         }
     }
