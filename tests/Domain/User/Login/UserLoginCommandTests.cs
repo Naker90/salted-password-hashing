@@ -34,9 +34,10 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
             userRepository
                 .Setup(x => x.FindBy(request.Email))
                 .Returns(user);
+            var passwordIntent = request.Password.Value + user.Password.SaltProp.Value;
             passwordEncryptionService
-                .Setup(x => x.Encrypt(request.Password.Value + user.Password.SaltProp.Value))
-                .Returns(encryptedPassword);
+                .Setup(x => x.Verify(user.Password.Value, passwordIntent))
+                .Returns(true);
 
             var result = command.Execute(request);
 
@@ -47,14 +48,13 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
         public void ShouldReturnsErrorWhenCredentialsAreInvalid()
         {
             UserLoginRequest request = CreateRequest();
-            var user = BuildUser(password: "$2y$asdasdVDFJVw4rtfAFVSDfjc34t");
+            var user = BuildUser();
             userRepository
                 .Setup(x => x.FindBy(It.IsAny<Email>()))
                 .Returns(user);
-            var encryptedPassword = "differentEncryptedPassword";
             passwordEncryptionService
-                .Setup(x => x.Encrypt(It.IsAny<string>()))
-                .Returns(encryptedPassword);
+                .Setup(x => x.Verify(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(false);
 
             var result = command.Execute(request);
 
@@ -74,7 +74,7 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
 
             Assert.IsFalse(result.IsValid);
             Assert.AreEqual(result.Error, LoginError.UserNotFound);
-            passwordEncryptionService.Verify(x => x.Encrypt(It.IsAny<string>()), Times.Never());
+            passwordEncryptionService.Verify(x => x.Verify(It.IsAny<string>(), It.IsAny<string>()), Times.Never());
         }
 
         private UserLoginRequest CreateRequest(){
