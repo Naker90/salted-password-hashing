@@ -1,4 +1,5 @@
 ﻿using SaltedPasswordHashing.Src.Domain.User.SignUp;
+using SaltedPasswordHashing.Src.Domain.User.Login;
 using SaltedPasswordHashing.Src.Repositories;
 using SaltedPasswordHashing.Src.Security;
 using System;
@@ -23,7 +24,7 @@ namespace ConsoleApplication
                 }
                 else if(line == "2")
                 {
-                    Console.Write("Login");
+                    Login();
                 }
                 else
                 {
@@ -75,6 +76,34 @@ namespace ConsoleApplication
                     Console.WriteLine(commandResult.Error.ToString());
                 }else{
                     Console.WriteLine("User registered successfuly!");
+                }
+            }
+        }
+
+        static void Login()
+        {
+            Console.WriteLine("Email: ");
+            var email = Console.ReadLine();
+            Console.WriteLine("Password: ");
+            var password = Console.ReadLine();
+
+            ExecuteCommand();
+
+            void ExecuteCommand()
+            {
+                var request =  UserLoginRequest.Create(
+                    email: email,
+                    password: password
+                );
+                var command = new UserLoginCommand(
+                    userRepository: new CsvUserRepository(),
+                    passwordEncryptionService: new BCryptPasswordEncryptionService());
+                var commandResult = command.Execute(request);
+                if(!commandResult.IsValid)
+                {
+                    Console.WriteLine(commandResult.Error.ToString());
+                }else{
+                    Console.WriteLine("User logged successfuly!");
                 }
             }
         }
