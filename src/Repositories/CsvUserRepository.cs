@@ -11,7 +11,6 @@ namespace SaltedPasswordHashing.Src.Repositories
 {
     public class CsvUserRepository : UserRepository
     {
-
         private const string DELIMITER = ";";
         private const string ABSOLUTE_FILE_PATH = "/home/naker90/Desktop/Projects/salted-password-hashing/users.csv";
 
@@ -22,9 +21,10 @@ namespace SaltedPasswordHashing.Src.Repositories
             {
                 csvWriter.Configuration.Delimiter = DELIMITER;
                 csvWriter.Configuration.HasHeaderRecord = true;
-                csvWriter.Configuration.AutoMap<User.PersistanceState>();
+                csvWriter.Configuration.AutoMap<SaltedPasswordHashing.Src.Repositories.Entities.User>();
 
-                csvWriter.WriteRecords(new [] { user.State });
+                var userEntity = BuildUserEntityFrom(state: user.State);
+                csvWriter.WriteRecords(new [] { userEntity });
 
                 writer.Flush();
             }
@@ -59,11 +59,32 @@ namespace SaltedPasswordHashing.Src.Repositories
                 var csv = new CsvReader(fileReader);
                 csv.Configuration.Delimiter = DELIMITER;
                 csv.Configuration.HasHeaderRecord = false;
-                csv.Configuration.AutoMap<User.PersistanceState>();
-                var records = csv.GetRecords<User.PersistanceState>();
-                var state = records.FirstOrDefault(x => x.Email == email.Value);
-                return new User(state);
+                csv.Configuration.AutoMap<SaltedPasswordHashing.Src.Repositories.Entities.User>();
+                var records = csv.GetRecords<SaltedPasswordHashing.Src.Repositories.Entities.User>();
+                var entity = records.FirstOrDefault(x => x.Email == email.Value);
+                return BuildUserFrom(entity);
             }   
+        }
+
+        private SaltedPasswordHashing.Src.Repositories.Entities.User BuildUserEntityFrom(User.PersistanceState state)
+        {
+            return new SaltedPasswordHashing.Src.Repositories.Entities.User
+            {
+                Id = state.Id,
+                Email = state.Email,
+                Password = state.Password,
+                Salt = state.Salt
+            };
+        }
+
+        private User BuildUserFrom(SaltedPasswordHashing.Src.Repositories.Entities.User entity)
+        {
+            var state = new User.PersistanceState(
+                id: entity.Id,
+                email: entity.Email,
+                password: entity.Password,
+                salt: entity.Salt);
+            return new User(state);
         }
     }
 }
