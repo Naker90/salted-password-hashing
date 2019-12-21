@@ -1,7 +1,7 @@
-﻿using SaltedPasswordHashing.Src.Domain.User.SignUp;
-using SaltedPasswordHashing.Src.Domain.User.Login;
+﻿using SaltedPasswordHashing.Src.Domain.User.Login;
 using SaltedPasswordHashing.Src.Repositories;
 using SaltedPasswordHashing.Src.Security;
+using ConsoleApplication.Controllers;
 using System;
 
 namespace ConsoleApplication
@@ -16,7 +16,7 @@ namespace ConsoleApplication
                 Console.WriteLine($"[Menu] {System.Environment.NewLine}" +  
                     $"- press 1 to signup {System.Environment.NewLine}" +
                     $"- press 2 to login {System.Environment.NewLine}" +
-                    "- press 3 to exit");
+                    "- press any other key to exit");
                 string line = Console.ReadLine();
                 if(line == "1")
                 {
@@ -35,49 +35,17 @@ namespace ConsoleApplication
 
         static void SignUp()
         {
+            var controller = Factory.CreateSignUpController();
+
             Console.WriteLine("Email: ");
             var email = Console.ReadLine();
             Console.WriteLine("Password: ");
             var password = Console.ReadLine();
 
-            var userSignUpRequestCreationResult = UserSignUpRequest.Create(
+            var request = new SignUpController.SignUpRequestDto(
                 email: email,
-                password: password
-            );
-            if(!userSignUpRequestCreationResult.IsValid)
-            {
-                PrintErrors();
-            }
-            else
-            {
-                ExecuteCommand();
-            }
-
-            void PrintErrors()
-            {
-                foreach (var error in userSignUpRequestCreationResult.Errors)
-                {
-                    Console.WriteLine(error.FieldId);
-                    Console.WriteLine(error.Error.ToString());   
-                }
-            }
-
-            void ExecuteCommand()
-            {
-                var request = userSignUpRequestCreationResult.Result;
-                var command = new UserSignUpCommand(
-                    userRepository: new CsvUserRepository(),
-                    passwordEncryptionService: new BCryptPasswordEncryptionService(),
-                    securePseudoRandomGenerator: new RNGSecurePseudoRandomGenerator()
-                );
-                var commandResult = command.Execute(request);
-                if(!commandResult.IsValid)
-                {
-                    Console.WriteLine(commandResult.Error.ToString());
-                }else{
-                    Console.WriteLine("User registered successfuly!");
-                }
-            }
+                password: password);
+            controller.Execute(request);
         }
 
         static void Login()
