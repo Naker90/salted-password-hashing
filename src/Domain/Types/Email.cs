@@ -3,10 +3,16 @@ namespace SaltedPasswordHashing.Src.Domain.Types
     public sealed class Email
     {
         public string Value { get; }
-        
-        public Email(string value)
+        public PersistanceState State => new PersistanceState(value: Value);
+
+        private Email(string value)
         {
-            Value = value;
+            this.Value = value;
+        }
+
+        public Email(PersistanceState state)
+        {
+            this.Value = state.Value;
         }
         
         public static Email CreateWithoutValidate(string value)
@@ -36,6 +42,16 @@ namespace SaltedPasswordHashing.Src.Domain.Types
             }
             catch {
                 return false;
+            }
+        }
+
+        public sealed class PersistanceState
+        {
+            public string Value { get; }
+
+            public PersistanceState(string value)
+            {
+                this.Value = value;
             }
         }
     }

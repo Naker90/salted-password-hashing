@@ -8,17 +8,18 @@ namespace SaltedPasswordHashing.Src.Domain.Types
     {
         public string Value { get; private set; }
         public Salt SaltProp { get; private set; }
+        public PersistanceState State => new PersistanceState(value: Value, salt: SaltProp.State);
 
         private Password(string value)
         {
             this.Value = value;
             this.SaltProp = new Salt(value: null);
         }
-        
-        public Password(string value, string salt)
+
+        public Password(PersistanceState state)
         {
-            this.Value = value;
-            this.SaltProp = new Salt(value: salt);
+            this.Value = state.Value;
+            this.SaltProp = new Salt(state.Salt);
         }
 
         public static Password CreateWithoutValidate(string value)
@@ -72,12 +73,41 @@ namespace SaltedPasswordHashing.Src.Domain.Types
             }
         }
 
+        public sealed class PersistanceState
+        {
+            public string Value { get; }
+            public Salt.PersistanceState Salt { get; }
+
+            public PersistanceState(string value, Salt.PersistanceState salt)
+            {
+                this.Value = value;
+                this.Salt = salt;
+            }
+        }
+
         public sealed class Salt
         {
             public string Value { get; }
+            public PersistanceState State => new PersistanceState(value: Value);
+
             public Salt(string value)
             {
                 this.Value = value;
+            }
+
+            public Salt(PersistanceState state)
+            {
+                this.Value = state.Value;
+            }
+
+            public sealed class PersistanceState
+            {
+                public string Value { get; }
+
+                public PersistanceState(string value)
+                {
+                    this.Value = value;
+                }
             }
         }
     }

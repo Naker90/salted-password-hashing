@@ -71,9 +71,9 @@ namespace SaltedPasswordHashing.Src.Repositories
             return new SaltedPasswordHashing.Src.Repositories.Entities.User
             {
                 Id = state.Id.Value,
-                Email = state.Email,
-                Password = state.Password,
-                Salt = state.Salt
+                Email = state.Email.Value,
+                Password = state.Password.Value,
+                Salt = state.Password.Salt.Value
             };
         }
 
@@ -81,9 +81,10 @@ namespace SaltedPasswordHashing.Src.Repositories
         {
             var state = new User.PersistanceState(
                 id: new User.Id.PersistanceState(value: entity.Id),
-                email: entity.Email,
-                password: entity.Password,
-                salt: entity.Salt);
+                email: new Email.PersistanceState(value: entity.Email),
+                password: new Password.PersistanceState(
+                    value: entity.Password, 
+                    salt: new Password.Salt.PersistanceState(value: entity.Salt)));
             return new User(state);
         }
     }

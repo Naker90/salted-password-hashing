@@ -10,9 +10,8 @@ namespace SaltedPasswordHashing.Src.Domain.User
         public Password Password { get; }
         public PersistanceState State => new PersistanceState(
             id: IdProp.State,
-            email: Email.Value,
-            password: Password.Value,
-            salt: Password.SaltProp.Value);
+            email: Email.State,
+            password: Password.State);
 
         private User(Id id, Email email, Password password)
         {
@@ -24,8 +23,8 @@ namespace SaltedPasswordHashing.Src.Domain.User
         public User(PersistanceState state)
         {
             this.IdProp = new Id(state: state.Id);
-            this.Email = new Email(value: state.Email);
-            this.Password = new Password(value: state.Password, salt: state.Salt);
+            this.Email = new Email(state: state.Email);
+            this.Password = new Password(state: state.Password);
         }
 
         public static User Create(Email email, Password password)
@@ -40,20 +39,17 @@ namespace SaltedPasswordHashing.Src.Domain.User
         public sealed class PersistanceState
         {
             public Id.PersistanceState Id { get; }
-            public string Email { get; }
-            public string Password { get; }
-            public string Salt { get; }
+            public Email.PersistanceState Email { get; }
+            public Password.PersistanceState Password { get; }
 
             public PersistanceState(
                 Id.PersistanceState id, 
-                string email, 
-                string password, 
-                string salt)
+                Email.PersistanceState email, 
+                Password.PersistanceState password)
             {
                 this.Id = id;
                 this.Email = email;
-                this.Password = password;
-                this.Salt = salt; 
+                this.Password = password; 
             }
         }
 
