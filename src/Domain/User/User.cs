@@ -9,7 +9,7 @@ namespace SaltedPasswordHashing.Src.Domain.User
         public Email Email { get; }
         public Password Password { get; }
         public PersistanceState State => new PersistanceState(
-            id: IdProp.Value.ToString(),
+            id: IdProp.State,
             email: Email.Value,
             password: Password.Value,
             salt: Password.SaltProp.Value);
@@ -23,10 +23,10 @@ namespace SaltedPasswordHashing.Src.Domain.User
 
         public User(PersistanceState state)
         {
-            this.IdProp = new Id(value: state.Id);
+            this.IdProp = new Id(state: state.Id);
             this.Email = new Email(value: state.Email);
             this.Password = new Password(value: state.Password, salt: state.Salt);
-        } 
+        }
 
         public static User Create(Email email, Password password)
         {
@@ -39,12 +39,16 @@ namespace SaltedPasswordHashing.Src.Domain.User
 
         public sealed class PersistanceState
         {
-            public string Id { get; }
+            public Id.PersistanceState Id { get; }
             public string Email { get; }
             public string Password { get; }
             public string Salt { get; }
 
-            public PersistanceState(string id, string email, string password, string salt)
+            public PersistanceState(
+                Id.PersistanceState id, 
+                string email, 
+                string password, 
+                string salt)
             {
                 this.Id = id;
                 this.Email = email;
@@ -56,20 +60,30 @@ namespace SaltedPasswordHashing.Src.Domain.User
         public sealed class Id 
         {
             public Guid Value { get; }
+            public PersistanceState State => new PersistanceState(value: Value.ToString());
 
             private Id(Guid value)
             {
                 this.Value = value;
             }
 
-            public Id(string value)
+            public Id(PersistanceState state)
             {
-                this.Value = new Guid(value);
+                this.Value = new Guid(state.Value);
             }
 
             public static Id Create()
             {
                 return new Id(value: Guid.NewGuid());
+            }
+
+            public sealed class PersistanceState
+            {
+                public string Value { get; }
+
+                public PersistanceState(string value){
+                    Value = value;
+                }
             }
         }
     }
