@@ -22,5 +22,19 @@ namespace ConsoleApplication.Controllers
                     securePseudoRandomGenerator: new RNGSecurePseudoRandomGenerator());
             }
         }
+
+        public static LoginController CreateLoginController()
+        {
+            return new LoginController(
+                consoleLogger: new ConsoleLoggerService(),
+                command: CreateUserLoginCommand());
+
+            UserLoginCommand CreateUserLoginCommand()
+            {
+                return new UserLoginCommand(
+                    userRepository: new CsvUserRepository(),
+                    passwordEncryptionService: new BCryptPasswordEncryptionService());
+            }
+        }
     }
 }

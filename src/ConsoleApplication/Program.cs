@@ -36,43 +36,42 @@ namespace ConsoleApplication
         static void SignUp()
         {
             var controller = Factory.CreateSignUpController();
-
-            Console.WriteLine("Email: ");
-            var email = Console.ReadLine();
-            Console.WriteLine("Password: ");
-            var password = Console.ReadLine();
-
+            var stdin = AskForUserAndPassword();
             var request = new SignUpController.SignUpRequestDto(
-                email: email,
-                password: password);
+                email: stdin.Email,
+                password: stdin.Password);
             controller.Execute(request);
         }
 
         static void Login()
         {
+            var controller = Factory.CreateLoginController();
+            var stdin = AskForUserAndPassword();
+            var request = new LoginController.LoginRequestDto(
+                email: stdin.Email,
+                password: stdin.Password
+            );
+            controller.Execute(request);
+        }
+
+        static StdInDto AskForUserAndPassword()
+        {
             Console.WriteLine("Email: ");
             var email = Console.ReadLine();
             Console.WriteLine("Password: ");
             var password = Console.ReadLine();
+            return new StdInDto(email: email, password: password);
+        }
 
-            ExecuteCommand();
+        private class StdInDto
+        {
+            public string Email { get; }
+            public string Password { get; }
 
-            void ExecuteCommand()
+            public StdInDto(string email, string password) 
             {
-                var request =  UserLoginRequest.Create(
-                    email: email,
-                    password: password
-                );
-                var command = new UserLoginCommand(
-                    userRepository: new CsvUserRepository(),
-                    passwordEncryptionService: new BCryptPasswordEncryptionService());
-                var commandResult = command.Execute(request);
-                if(!commandResult.IsValid)
-                {
-                    Console.WriteLine(commandResult.Error.ToString());
-                }else{
-                    Console.WriteLine("User logged successfuly!");
-                }
+                Email = email;
+                Password = password;
             }
         }
     }
