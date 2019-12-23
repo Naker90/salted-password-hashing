@@ -2,7 +2,7 @@ using System;
 
 namespace ConsoleApplication.Services
 {
-    public sealed class ConsoleLoggerService : Logger
+    public sealed class ConsoleLogger : Logger
     {
         public void LogInfo(string message)
         {

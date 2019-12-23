@@ -11,7 +11,7 @@ namespace ConsoleApplication.Controllers
         public static SignUpController CreateSignUpController()
         {
             return new SignUpController(
-                consoleLogger: new ConsoleLoggerService(),
+                consoleLogger: new ConsoleLogger(),
                 command: CreateUserSignUpCommand());
 
             UserSignUpCommand CreateUserSignUpCommand()
@@ -26,7 +26,7 @@ namespace ConsoleApplication.Controllers
         public static LoginController CreateLoginController()
         {
             return new LoginController(
-                consoleLogger: new ConsoleLoggerService(),
+                consoleLogger: new ConsoleLogger(),
                 command: CreateUserLoginCommand());
 
             UserLoginCommand CreateUserLoginCommand()
