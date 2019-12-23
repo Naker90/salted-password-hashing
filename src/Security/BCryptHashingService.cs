@@ -3,7 +3,7 @@ using SaltedPasswordHashing.Src.Domain.Types;
 
 namespace SaltedPasswordHashing.Src.Security
 {
-    public class BCryptEncryptionService : EncryptionService
+    public class BCryptHashingService : HashingService
     {
         public string Hash(string input)
         {
@@ -12,7 +12,7 @@ namespace SaltedPasswordHashing.Src.Security
 
         public bool Verify(string text, string hash)
         {
-            return BCrypt.Net.BCrypt.Verify(text, hash);
+            return BCrypt.Net.BCrypt.Verify(hash, text);
         }
     }
 }
