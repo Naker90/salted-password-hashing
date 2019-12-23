@@ -17,7 +17,7 @@ namespace ConsoleApplication.Controllers
             UserSignUpCommand CreateUserSignUpCommand()
             {
                 return new UserSignUpCommand(
-                    userRepository: new CsvUserRepository(),
+                    userRepository: CsvUserRepository(),
                     hashingService: new BCryptHashingService(),
                     securePseudoRandomGenerator: new RNGSecurePseudoRandomGenerator());
             }
@@ -32,9 +32,14 @@ namespace ConsoleApplication.Controllers
             UserLoginCommand CreateUserLoginCommand()
             {
                 return new UserLoginCommand(
-                    userRepository: new CsvUserRepository(),
+                    userRepository: CsvUserRepository(),
                     hashingService: new BCryptHashingService());
             }
+        }
+
+        private static CsvUserRepository CsvUserRepository()
+        {
+            return new CsvUserRepository(absoluteFilePath: "/home/naker90/Desktop/Projects/salted-password-hashing/users.csv");
         }
     }
 }
