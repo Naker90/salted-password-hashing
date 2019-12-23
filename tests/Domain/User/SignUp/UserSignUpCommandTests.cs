@@ -39,10 +39,10 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
             securePseudoRandomGenerator
                 .Setup(x => x.Generate())
                 .Returns(passwordSalt);
-            var encryptedPasswordOutput = "$2y$asdasdVDFJVw4rtfAFVSDfjc34t";
+            var hashedPasswordOutput = "$2y$asdasdVDFJVw4rtfAFVSDfjc34t";
             hashingService
                 .Setup(x => x.Hash(request.Password.Value + passwordSalt.Value))
-                .Returns(encryptedPasswordOutput);
+                .Returns(hashedPasswordOutput);
 
             var result = command.Execute(request);
 
@@ -51,7 +51,7 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
                 .Verify(x => x.Create(It.Is<SaltedPasswordHashing.Src.Domain.User.User>(x => 
                     x.IdProp.Value != null
                     && x.Email.Value == request.Email.Value
-                    && x.Password.Value == encryptedPasswordOutput
+                    && x.Password.Value == hashedPasswordOutput
                     && x.Password.SaltProp.Value == passwordSalt.Value)), Times.Once());
         }
 

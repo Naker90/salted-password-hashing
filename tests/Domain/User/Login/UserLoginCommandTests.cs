@@ -30,8 +30,8 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
         public void ShouldLoginUser()
         {
             UserLoginRequest request = CreateRequest();
-            var encryptedPassword = "$2y$asdasdVDFJVw4rtfAFVSDfjc34t";
-            var user = UserBuilder.Build(email: request.Email.Value, password: encryptedPassword);
+            var hashedPassword = "$2y$asdasdVDFJVw4rtfAFVSDfjc34t";
+            var user = UserBuilder.Build(email: request.Email.Value, password: hashedPassword);
             userRepository
                 .Setup(x => x.FindBy(request.Email))
                 .Returns(user);
