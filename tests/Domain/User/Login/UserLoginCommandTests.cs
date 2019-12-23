@@ -12,17 +12,17 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
     public class UserLoginCommandTests
     {
         private Mock<UserRepository> userRepository;
-        private Mock<PasswordEncryptionService> passwordEncryptionService;
+        private Mock<EncryptionService> encryptionService;
         private UserLoginCommand command;
 
         [TestInitialize]
         public void Init()
         {
             userRepository = new Mock<UserRepository>(); 
-            passwordEncryptionService = new Mock<PasswordEncryptionService>();
+            encryptionService = new Mock<EncryptionService>();
             command = new UserLoginCommand(
                 userRepository: userRepository.Object,
-                passwordEncryptionService: passwordEncryptionService.Object);
+                encryptionService: encryptionService.Object);
         }
 
         [TestMethod]
@@ -35,7 +35,7 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
                 .Setup(x => x.FindBy(request.Email))
                 .Returns(user);
             var passwordIntent = request.Password.Value + user.Password.SaltProp.Value;
-            passwordEncryptionService
+            encryptionService
                 .Setup(x => x.Verify(user.Password.Value, passwordIntent))
                 .Returns(true);
 
@@ -52,7 +52,7 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
             userRepository
                 .Setup(x => x.FindBy(It.IsAny<Email>()))
                 .Returns(user);
-            passwordEncryptionService
+            encryptionService
                 .Setup(x => x.Verify(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(false);
 
@@ -74,7 +74,7 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
 
             Assert.IsFalse(result.IsValid);
             Assert.AreEqual(result.Error, LoginError.UserNotFound);
-            passwordEncryptionService.Verify(x => x.Verify(It.IsAny<string>(), It.IsAny<string>()), Times.Never());
+            encryptionService.Verify(x => x.Verify(It.IsAny<string>(), It.IsAny<string>()), Times.Never());
         }
 
         private UserLoginRequest CreateRequest(){

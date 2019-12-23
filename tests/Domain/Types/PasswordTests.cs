@@ -89,14 +89,14 @@ namespace SaltedPasswordHashing.Test.Domain.Types
         public class WhenPasswordIsCreatedSuccessfuly : PasswordTests
         {
 
-            private Mock<PasswordEncryptionService> passwordEncryptionService;
+            private Mock<EncryptionService> encryptionService;
             private Mock<SecurePseudoRandomGenerator> securePseudoRandomGenerator;
             private Password password;
 
             [TestInitialize]
             public void Init()
             {
-                passwordEncryptionService = new Mock<PasswordEncryptionService>();
+                encryptionService = new Mock<EncryptionService>();
                 securePseudoRandomGenerator = new Mock<SecurePseudoRandomGenerator>();
                 password = Password.CreateAndValidate(value: "Passw0rd$").Result;
             }
@@ -109,12 +109,12 @@ namespace SaltedPasswordHashing.Test.Domain.Types
                     .Setup(x => x.Generate())
                     .Returns(passwordSalt);
                 var encryptedPasswordOutput = "$2y$asdasdVDFJVw4rtfAFVSDfjc34t";
-                passwordEncryptionService
+                encryptionService
                     .Setup(x => x.Encrypt(password.Value + passwordSalt.Value))
                     .Returns(encryptedPasswordOutput);
 
                 password.Encrypt(
-                    passwordEncryptionService: passwordEncryptionService.Object,
+                    encryptionService: encryptionService.Object,
                     securePseudoRandomGenerator: securePseudoRandomGenerator.Object);
 
                 Assert.AreEqual(password.Value, encryptedPasswordOutput);

@@ -18,7 +18,7 @@ namespace ConsoleApplication.Controllers
             {
                 return new UserSignUpCommand(
                     userRepository: new CsvUserRepository(),
-                    passwordEncryptionService: new BCryptPasswordEncryptionService(),
+                    encryptionService: new BCryptEncryptionService(),
                     securePseudoRandomGenerator: new RNGSecurePseudoRandomGenerator());
             }
         }
@@ -33,7 +33,7 @@ namespace ConsoleApplication.Controllers
             {
                 return new UserLoginCommand(
                     userRepository: new CsvUserRepository(),
-                    passwordEncryptionService: new BCryptPasswordEncryptionService());
+                    encryptionService: new BCryptEncryptionService());
             }
         }
     }
