@@ -8,14 +8,14 @@ namespace SaltedPasswordHashing.Src.Domain.User.Login
     public sealed class UserLoginCommand
     {
         private readonly UserRepository userRepository;
-        private readonly EncryptionService encryptionService;
+        private readonly HashingService hashingService;
 
         public UserLoginCommand(
             UserRepository userRepository,
-            EncryptionService encryptionService)
+            HashingService hashingService)
         {
             this.userRepository = userRepository;
-            this.encryptionService = encryptionService;
+            this.hashingService = hashingService;
         }
 
         public CreationResult<User, LoginError> Execute(UserLoginRequest request)
@@ -34,7 +34,7 @@ namespace SaltedPasswordHashing.Src.Domain.User.Login
         private bool AreUserCredentialsValid(UserLoginRequest request, User user)
         {
             var saltedPassword = request.Password.Value + user.Password.SaltProp.Value;
-            return encryptionService.Verify(
+            return hashingService.Verify(
                 text: saltedPassword, 
                 hash: user.Password.Value);
         }

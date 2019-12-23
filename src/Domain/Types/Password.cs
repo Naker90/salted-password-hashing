@@ -41,13 +41,13 @@ namespace SaltedPasswordHashing.Src.Domain.Types
         }
 
         public void Encrypt(
-            EncryptionService encryptionService,
+            HashingService hashingService,
             SecurePseudoRandomGenerator securePseudoRandomGenerator)
         {
             Salt salt = securePseudoRandomGenerator.Generate();
             var saltedPassword = this.Value + salt.Value;
-            var encryptedPassword = encryptionService.Encrypt(saltedPassword);
-            this.Value = encryptedPassword;
+            var hashedPassword = hashingService.Encrypt(saltedPassword);
+            this.Value = hashedPassword;
             this.SaltProp = salt;
         }
 

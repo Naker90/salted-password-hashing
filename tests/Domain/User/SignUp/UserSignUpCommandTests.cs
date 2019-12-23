@@ -12,7 +12,7 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
     public class UserSignUpCommandTests
     {
         private Mock<UserRepository> userRepository;
-        private Mock<EncryptionService> encryptionService;
+        private Mock<HashingService> hashingService;
         private Mock<SecurePseudoRandomGenerator> securePseudoRandomGenerator;
         private UserSignUpCommand command;
 
@@ -20,11 +20,11 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
         public void Init()
         {
             userRepository = new Mock<UserRepository>(); 
-            encryptionService = new Mock<EncryptionService>();
+            hashingService = new Mock<HashingService>();
             securePseudoRandomGenerator = new Mock<SecurePseudoRandomGenerator>();
             command = new UserSignUpCommand(
                 userRepository: userRepository.Object,
-                encryptionService: encryptionService.Object,
+                hashingService: hashingService.Object,
                 securePseudoRandomGenerator: securePseudoRandomGenerator.Object);
         }
 
@@ -40,7 +40,7 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
                 .Setup(x => x.Generate())
                 .Returns(passwordSalt);
             var encryptedPasswordOutput = "$2y$asdasdVDFJVw4rtfAFVSDfjc34t";
-            encryptionService
+            hashingService
                 .Setup(x => x.Encrypt(request.Password.Value + passwordSalt.Value))
                 .Returns(encryptedPasswordOutput);
 
@@ -69,7 +69,7 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
             Assert.AreEqual(result.Error, SignUpError.UserAlreadyExist);
             securePseudoRandomGenerator
                 .Verify(x => x.Generate(), Times.Never());
-            encryptionService
+            hashingService
                 .Verify(x => x.Encrypt(It.IsAny<string>()), Times.Never());
             userRepository
                 .Verify(x => x.Create(It.IsAny<SaltedPasswordHashing.Src.Domain.User.User>()), Times.Never());

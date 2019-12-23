@@ -13,17 +13,17 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
     public class UserLoginCommandTests
     {
         private Mock<UserRepository> userRepository;
-        private Mock<EncryptionService> encryptionService;
+        private Mock<HashingService> hashingService;
         private UserLoginCommand command;
 
         [TestInitialize]
         public void Init()
         {
             userRepository = new Mock<UserRepository>(); 
-            encryptionService = new Mock<EncryptionService>();
+            hashingService = new Mock<HashingService>();
             command = new UserLoginCommand(
                 userRepository: userRepository.Object,
-                encryptionService: encryptionService.Object);
+                hashingService: hashingService.Object);
         }
 
         [TestMethod]
@@ -36,7 +36,7 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
                 .Setup(x => x.FindBy(request.Email))
                 .Returns(user);
             var passwordIntent = request.Password.Value + user.Password.SaltProp.Value;
-            encryptionService
+            hashingService
                 .Setup(x => x.Verify(user.Password.Value, passwordIntent))
                 .Returns(true);
 
@@ -53,7 +53,7 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
             userRepository
                 .Setup(x => x.FindBy(It.IsAny<Email>()))
                 .Returns(user);
-            encryptionService
+            hashingService
                 .Setup(x => x.Verify(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(false);
 
@@ -75,7 +75,7 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
 
             Assert.IsFalse(result.IsValid);
             Assert.AreEqual(result.Error, LoginError.UserNotFound);
-            encryptionService.Verify(x => x.Verify(It.IsAny<string>(), It.IsAny<string>()), Times.Never());
+            hashingService.Verify(x => x.Verify(It.IsAny<string>(), It.IsAny<string>()), Times.Never());
         }
 
         private UserLoginRequest CreateRequest(){

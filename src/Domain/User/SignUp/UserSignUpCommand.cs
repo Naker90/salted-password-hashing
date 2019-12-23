@@ -7,16 +7,16 @@ namespace SaltedPasswordHashing.Src.Domain.User.SignUp
     public sealed class UserSignUpCommand
     {
         private readonly UserRepository userRepository;
-        private readonly EncryptionService encryptionService;
+        private readonly HashingService hashingService;
         private readonly SecurePseudoRandomGenerator securePseudoRandomGenerator;
 
         public UserSignUpCommand(
             UserRepository userRepository,
-            EncryptionService encryptionService,
+            HashingService hashingService,
             SecurePseudoRandomGenerator securePseudoRandomGenerator)
         {
             this.userRepository = userRepository;
-            this.encryptionService = encryptionService;
+            this.hashingService = hashingService;
             this.securePseudoRandomGenerator = securePseudoRandomGenerator;
         }
 
@@ -34,7 +34,7 @@ namespace SaltedPasswordHashing.Src.Domain.User.SignUp
         private User EncryptPasswordAndCreateUser(UserSignUpRequest request)
         {
             request.Password.Encrypt(
-                encryptionService: encryptionService,
+                hashingService: hashingService,
                 securePseudoRandomGenerator: securePseudoRandomGenerator);
             return User.Create(email: request.Email, password: request.Password);
         }
