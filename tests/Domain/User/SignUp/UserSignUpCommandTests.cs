@@ -41,7 +41,7 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
                 .Returns(passwordSalt);
             var encryptedPasswordOutput = "$2y$asdasdVDFJVw4rtfAFVSDfjc34t";
             hashingService
-                .Setup(x => x.Encrypt(request.Password.Value + passwordSalt.Value))
+                .Setup(x => x.Hash(request.Password.Value + passwordSalt.Value))
                 .Returns(encryptedPasswordOutput);
 
             var result = command.Execute(request);
@@ -70,7 +70,7 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
             securePseudoRandomGenerator
                 .Verify(x => x.Generate(), Times.Never());
             hashingService
-                .Verify(x => x.Encrypt(It.IsAny<string>()), Times.Never());
+                .Verify(x => x.Hash(It.IsAny<string>()), Times.Never());
             userRepository
                 .Verify(x => x.Create(It.IsAny<SaltedPasswordHashing.Src.Domain.User.User>()), Times.Never());
         }

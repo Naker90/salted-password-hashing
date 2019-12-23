@@ -102,7 +102,7 @@ namespace SaltedPasswordHashing.Test.Domain.Types
             }
 
             [TestMethod]
-            public void ShouldEncryptPasswordWhenRequested()
+            public void ShouldHashPasswordWhenRequested()
             {
                 var passwordSalt = new Password.Salt(value: "4235346654");
                 securePseudoRandomGenerator
@@ -110,10 +110,10 @@ namespace SaltedPasswordHashing.Test.Domain.Types
                     .Returns(passwordSalt);
                 var hashedPasswordOutput = "$2y$asdasdVDFJVw4rtfAFVSDfjc34t";
                 hashingService
-                    .Setup(x => x.Encrypt(password.Value + passwordSalt.Value))
+                    .Setup(x => x.Hash(password.Value + passwordSalt.Value))
                     .Returns(hashedPasswordOutput);
 
-                password.Encrypt(
+                password.Hash(
                     hashingService: hashingService.Object,
                     securePseudoRandomGenerator: securePseudoRandomGenerator.Object);
 
