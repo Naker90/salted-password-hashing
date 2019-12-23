@@ -1,4 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SaltedPasswordHashing.Test.Domain.Builders;
 using SaltedPasswordHashing.Src.Domain.Types;
 using SaltedPasswordHashing.Src.Domain.Security;
 using SaltedPasswordHashing.Src.Domain.User.Login;
@@ -30,7 +31,7 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
         {
             UserLoginRequest request = CreateRequest();
             var encryptedPassword = "$2y$asdasdVDFJVw4rtfAFVSDfjc34t";
-            var user = BuildUser(email: request.Email.Value, password: encryptedPassword);
+            var user = UserBuilder.Build(email: request.Email.Value, password: encryptedPassword);
             userRepository
                 .Setup(x => x.FindBy(request.Email))
                 .Returns(user);
@@ -48,7 +49,7 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
         public void ShouldReturnsErrorWhenCredentialsAreInvalid()
         {
             UserLoginRequest request = CreateRequest();
-            var user = BuildUser();
+            var user = UserBuilder.Build();
             userRepository
                 .Setup(x => x.FindBy(It.IsAny<Email>()))
                 .Returns(user);
@@ -82,15 +83,6 @@ namespace SaltedPasswordHashing.Test.Domain.User.SignUp
                 email: "user@email.com",                
                 password: "Passw0rd$"
             );
-        }
-
-        private SaltedPasswordHashing.Src.Domain.User.User BuildUser(
-            string email = "user@email.com",
-            string password = "Pass0word$")
-        {
-            return SaltedPasswordHashing.Src.Domain.User.User.Create(
-                email: Email.CreateWithoutValidate(email), 
-                password: Password.CreateWithoutValidate(password));
         }
     }
 }

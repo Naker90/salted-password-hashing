@@ -13,7 +13,7 @@ namespace SaltedPasswordHashing.Src.Domain.Types
         private Password(string value)
         {
             this.Value = value;
-            this.SaltProp = new Salt(value: null);
+            this.SaltProp = null;
         }
 
         public Password(PersistanceState state)
