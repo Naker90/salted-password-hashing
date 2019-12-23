@@ -2,7 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SaltedPasswordHashing.Src.Domain.Types;
 using System;
 
-namespace SaltedPasswordHashing.Test.Domain.Types
+namespace SaltedPasswordHashing.Test.Domain.Unit.Types
 {
     [TestClass]
     public class CreationResultTests

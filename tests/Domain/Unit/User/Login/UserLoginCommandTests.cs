@@ -1,5 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SaltedPasswordHashing.Test.Domain.Builders;
+using SaltedPasswordHashing.Test.Domain.Unit.Builders;
 using SaltedPasswordHashing.Src.Domain.Types;
 using SaltedPasswordHashing.Src.Domain.Security;
 using SaltedPasswordHashing.Src.Domain.User.Login;
@@ -7,7 +7,7 @@ using SaltedPasswordHashing.Src.Domain.User;
 using System;
 using Moq;
 
-namespace SaltedPasswordHashing.Test.Domain.User.SignUp
+namespace SaltedPasswordHashing.Test.Domain.Unit.User.SignUp
 {
     [TestClass]
     public class UserLoginCommandTests

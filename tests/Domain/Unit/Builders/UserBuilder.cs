@@ -1,7 +1,7 @@
 using SaltedPasswordHashing.Src.Domain.Types;
 using SaltedPasswordHashing.Src.Domain.User;
 
-namespace SaltedPasswordHashing.Test.Domain.Builders
+namespace SaltedPasswordHashing.Test.Domain.Unit.Builders
 {
     public static class UserBuilder
     {

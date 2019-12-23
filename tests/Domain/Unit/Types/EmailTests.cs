@@ -1,7 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SaltedPasswordHashing.Src.Domain.Types;
 
-namespace SaltedPasswordHashing.Test.Domain.Types
+namespace SaltedPasswordHashing.Test.Domain.Unit.Types
 {
     [TestClass]
     public class EmailTests

@@ -3,7 +3,7 @@ using SaltedPasswordHashing.Src.Domain.Types;
 using SaltedPasswordHashing.Src.Domain.Security;
 using Moq;
 
-namespace SaltedPasswordHashing.Test.Domain.Types
+namespace SaltedPasswordHashing.Test.Domain.Unit.Types
 {
     [TestClass]
     public class PasswordTests

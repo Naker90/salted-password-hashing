@@ -6,7 +6,7 @@ using SaltedPasswordHashing.Src.Domain.User;
 using System;
 using Moq;
 
-namespace SaltedPasswordHashing.Test.Domain.User.SignUp
+namespace SaltedPasswordHashing.Test.Domain.Unit.User.SignUp
 {
     [TestClass]
     public class UserSignUpCommandTests

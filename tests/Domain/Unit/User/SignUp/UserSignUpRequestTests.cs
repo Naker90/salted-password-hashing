@@ -3,7 +3,7 @@ using SaltedPasswordHashing.Src.Domain.Types;
 using SaltedPasswordHashing.Src.Domain.User.SignUp;
 using System.Linq;
 
-namespace SaltedPasswordHashing.Test.Domain.User.SignUp
+namespace SaltedPasswordHashing.Test.Domain.Unit.User.SignUp
 {
     [TestClass]
     public class UserSignUpRequestTests
