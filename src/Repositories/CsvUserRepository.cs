@@ -12,11 +12,16 @@ namespace SaltedPasswordHashing.Src.Repositories
     public class CsvUserRepository : UserRepository
     {
         private const string DELIMITER = ";";
-        private const string ABSOLUTE_FILE_PATH = "/home/naker90/Desktop/Projects/salted-password-hashing/users.csv";
+        private readonly string absoluteFilePath;
+
+        public CsvUserRepository(string absoluteFilePath)
+        {
+            this.absoluteFilePath = absoluteFilePath;
+        }
 
         public void Create(User user)
         {
-            using (TextWriter writer = File.AppendText(ABSOLUTE_FILE_PATH))
+            using (TextWriter writer = File.AppendText(absoluteFilePath))
             using (var csvWriter = new CsvWriter(writer))
             {
                 csvWriter.Configuration.Delimiter = DELIMITER;
@@ -31,13 +36,13 @@ namespace SaltedPasswordHashing.Src.Repositories
         }
 
         public bool Exist(Email email) {
-            if(!File.Exists(ABSOLUTE_FILE_PATH))
+            if(!File.Exists(absoluteFilePath))
             {
                 return false;
             }
             List<string> result = new List<string>();
             string value;
-            using (TextReader fileReader = File.OpenText(ABSOLUTE_FILE_PATH)) {
+            using (TextReader fileReader = File.OpenText(absoluteFilePath)) {
                 var csv = new CsvReader(fileReader);
                 csv.Configuration.HasHeaderRecord = false;
                 while (csv.Read()) {
@@ -51,11 +56,11 @@ namespace SaltedPasswordHashing.Src.Repositories
 
         public User FindBy(Email email)
         {
-            if(!File.Exists(ABSOLUTE_FILE_PATH))
+            if(!File.Exists(absoluteFilePath))
             {
                 return null;
             }
-            using (TextReader fileReader = File.OpenText(ABSOLUTE_FILE_PATH)) {
+            using (TextReader fileReader = File.OpenText(absoluteFilePath)) {
                 var csv = new CsvReader(fileReader);
                 csv.Configuration.Delimiter = DELIMITER;
                 csv.Configuration.HasHeaderRecord = false;
