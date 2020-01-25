@@ -1,6 +1,5 @@
 using SaltedPasswordHashing.Src.Domain.Types;
 using SaltedPasswordHashing.Src.Domain.Security;
-using SaltedPasswordHashing.Src.Domain.User;
 
 namespace SaltedPasswordHashing.Src.Domain.User.SignUp
 {

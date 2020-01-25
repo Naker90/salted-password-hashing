@@ -1,6 +1,4 @@
 using SaltedPasswordHashing.Src.Domain.User.SignUp;
-using SaltedPasswordHashing.Src.Repositories;
-using SaltedPasswordHashing.Src.Security;
 using ConsoleApplication.Services;
 
 namespace ConsoleApplication.Controllers

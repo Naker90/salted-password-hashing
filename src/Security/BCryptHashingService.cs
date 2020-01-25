@@ -1,5 +1,4 @@
 using SaltedPasswordHashing.Src.Domain.Security;
-using SaltedPasswordHashing.Src.Domain.Types;
 
 namespace SaltedPasswordHashing.Src.Security
 {
