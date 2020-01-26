@@ -33,6 +33,7 @@ namespace SaltedPasswordHashing.Src.Domain.User.Login
 
         private bool AreUserCredentialsValid(UserLoginRequest request, User user)
         {
+            //TODO: Hashear la pass
             var saltedPassword = request.Password.Value + user.Password.SaltProp.Value;
             return hashingService.Verify(
                 text: saltedPassword, 
