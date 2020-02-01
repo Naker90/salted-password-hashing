@@ -11,7 +11,7 @@ namespace SaltedPasswordHashing.Src.Security
         {
             using (RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider())
             {
-                byte[] data = new byte[30]; 
+                byte[] data = new byte[64]; 
                 rng.GetBytes(data);
                 var value = BitConverter.ToString(data, 0).Replace("-", "");
                 return new Password.Salt(value: value);
