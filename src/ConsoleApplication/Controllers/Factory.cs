@@ -18,7 +18,7 @@ namespace ConsoleApplication.Controllers
             {
                 return new UserSignUpCommand(
                     userRepository: CsvUserRepository(),
-                    hashingService: new BCryptHashingService(),
+                    hashingService: new Sha512HasingService(),
                     securePseudoRandomGenerator: new RNGSecurePseudoRandomGenerator());
             }
         }
@@ -33,7 +33,7 @@ namespace ConsoleApplication.Controllers
             {
                 return new UserLoginCommand(
                     userRepository: CsvUserRepository(),
-                    hashingService: new BCryptHashingService());
+                    hashingService: new Sha512HasingService());
             }
         }
 
