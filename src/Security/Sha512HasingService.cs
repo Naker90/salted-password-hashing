@@ -1,6 +1,7 @@
 using SaltedPasswordHashing.Src.Domain.Security;
 using System.Security.Cryptography;
 using System.Text;
+using System.Linq;
 
 namespace SaltedPasswordHashing.Src.Security
 {
@@ -11,13 +12,14 @@ namespace SaltedPasswordHashing.Src.Security
             var data = Encoding.UTF8.GetBytes(input); 
             using(SHA512 sha512 = new SHA512Managed())
             {
-                return sha512.ComputeHash(data).ToString();
+                var hash = sha512.ComputeHash(data);
+                return GetStringFromHash(hash);
             }
         }
 
-        public bool Verify(string hash, string text)
+        private string GetStringFromHash(byte[] hash)
         {
-            throw new System.NotImplementedException();
+            return string.Join("", hash.Select(b => b.ToString("x2")));
         }
     }
 }
