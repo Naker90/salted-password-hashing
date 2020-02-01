@@ -74,7 +74,6 @@ namespace SaltedPasswordHashing.Test.Domain.Unit.User.SignUp
 
             Assert.IsFalse(result.IsValid);
             Assert.AreEqual(result.Error, LoginError.UserNotFound);
-            hashingService.Verify(x => x.Verify(It.IsAny<string>(), It.IsAny<string>()), Times.Never());
         }
 
         private UserLoginRequest CreateRequest(){
