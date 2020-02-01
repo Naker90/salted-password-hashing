@@ -4,7 +4,6 @@ using SaltedPasswordHashing.Src.Domain.Types;
 using SaltedPasswordHashing.Src.Domain.Security;
 using SaltedPasswordHashing.Src.Domain.User.Login;
 using SaltedPasswordHashing.Src.Domain.User;
-using System;
 using Moq;
 
 namespace SaltedPasswordHashing.Test.Domain.Unit.User.SignUp
@@ -37,8 +36,8 @@ namespace SaltedPasswordHashing.Test.Domain.Unit.User.SignUp
                 .Returns(user);
             var passwordIntent = request.Password.Value + user.Password.SaltProp.Value;
             hashingService
-                .Setup(x => x.Verify(user.Password.Value, passwordIntent))
-                .Returns(true);
+                .Setup(x => x.Hash(passwordIntent))
+                .Returns(hashedPassword);
 
             var result = command.Execute(request);
 
@@ -54,8 +53,8 @@ namespace SaltedPasswordHashing.Test.Domain.Unit.User.SignUp
                 .Setup(x => x.FindBy(It.IsAny<Email>()))
                 .Returns(user);
             hashingService
-                .Setup(x => x.Verify(It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(false);
+                .Setup(x => x.Hash(It.IsAny<string>()))
+                .Returns("any-other-hash");
 
             var result = command.Execute(request);
 
